@@ -1,0 +1,43 @@
+# Essentials for ZSH
+
+export ZSH="$HOME/.oh-my-zsh"
+
+# Language configuration
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# Appearance settings
+
+ZSH_THEME="robbyrussell" # Name of the theme to load, see https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+zstyle ':omz:update' mode auto  # Update theme automatically without asking
+
+DISABLE_AUTO_TITLE="true" # Disable auto-setting terminal title.
+
+# Command history options
+
+HIST_STAMPS="dd.mm.yyyy" # Command execution timestamp shown in the history command output (see 'man strftime' for details)
+HISTFILE=~/.cache/.zsh_history # Location of the history file
+HISTSIZE=10000 # Limit of the lines to keep track of in history
+SAVEHIST=10000 # Limit of the command size to keep track of in history
+setopt APPEND_HISTORY # adds history
+setopt HIST_IGNORE_ALL_DUPS # If a new command line being added to the history list duplicates an older one, the older command is removed from the list
+setopt HIST_IGNORE_SPACE # No history when starting command with space
+setopt HIST_SAVE_NO_DUPS # When writing out the history file, older commands that duplicate newer ones are omitted
+
+# Configure ZSH with the above settings
+
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+plugins=(
+    git
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='nano'
+else
+  export EDITOR='code --wait --new-window'
+fi

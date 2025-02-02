@@ -17,13 +17,19 @@ DISABLE_AUTO_TITLE="true" # Disable auto-setting terminal title.
 # Command history options
 
 HIST_STAMPS="dd.mm.yyyy" # Command execution timestamp shown in the history command output (see 'man strftime' for details)
-HISTFILE=~/.cache/.zsh_history # Location of the history file
+HISTFILE="$HOME/.cache/.zsh_history" # Location of the history file
 HISTSIZE=10000 # Limit of the lines to keep track of in history
 SAVEHIST=10000 # Limit of the command size to keep track of in history
 setopt APPEND_HISTORY # adds history
 setopt HIST_IGNORE_ALL_DUPS # If a new command line being added to the history list duplicates an older one, the older command is removed from the list
 setopt HIST_IGNORE_SPACE # No history when starting command with space
 setopt HIST_SAVE_NO_DUPS # When writing out the history file, older commands that duplicate newer ones are omitted
+
+# Sessions history options
+
+SHELL_SESSION_DIR="$HOME/.cache/.zsh_sessions"
+SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"                                                    
+mkdir -m 700 -p "$SHELL_SESSION_DIR"
 
 # Configure ZSH with the above settings
 

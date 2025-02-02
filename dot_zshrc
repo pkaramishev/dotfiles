@@ -31,6 +31,10 @@ SHELL_SESSION_DIR="$HOME/.cache/.zsh_sessions"
 SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"                                                    
 mkdir -m 700 -p "$SHELL_SESSION_DIR"
 
+# Oh-my-zsh caches
+
+export ZSH_COMPDUMP="$HOME/.cache/.zcompdump-$HOST"
+
 # Configure ZSH with the above settings
 
 # Standard plugins can be found in $ZSH/plugins/

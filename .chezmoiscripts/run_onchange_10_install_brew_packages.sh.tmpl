@@ -4,6 +4,8 @@
 # The next line will trigger the script on every MacOS update
 # MacOS build version: {{ output "sw_vers" "--buildVersion" }}
 
+echo "💰  Setting up Homebrew packages"
+
 formulae=(
     git
     git-delta

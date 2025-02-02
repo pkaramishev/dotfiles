@@ -3,6 +3,8 @@
 # The next line will trigger the script on every VSCode update
 # VSCode version: {{ output "code" "-v" | replaceAllRegex "\n" " " }}
 
+echo "🛠️  Configuring VSCode preferences & plugins"
+
 code --install-extension asciidoctor.asciidoctor-vscode --force
 code --install-extension ms-azuretools.vscode-docker --force
 

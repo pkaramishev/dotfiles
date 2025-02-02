@@ -1,4 +1,11 @@
+{{- $full_name := promptStringOnce . "full_name" "👤 What's your full name" -}}
+{{- $email := promptStringOnce . "email" "📧 What's your primary email for this machine" -}}
+
 edit:
   command: code
   args: [ "--wait" ]
 
+data:
+  user:
+    full_name: {{ $full_name | quote }}
+    email: {{ $email | quote }}

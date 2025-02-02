@@ -9,7 +9,7 @@ export LANG=en_US.UTF-8
 
 # Appearance settings
 
-ZSH_THEME="robbyrussell" # Name of the theme to load, see https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="" # Disabled in favor of pure theme installed by zplug
 zstyle ':omz:update' mode auto  # Update theme automatically without asking
 
 DISABLE_AUTO_TITLE="true" # Disable auto-setting terminal title.
@@ -37,13 +37,11 @@ export ZSH_COMPDUMP="$HOME/.cache/.zcompdump-$HOST"
 
 # Configure ZSH with the above settings
 
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-plugins=(
-    git
-)
-
 source $ZSH/oh-my-zsh.sh
+
+# Load plugins
+
+[ -f ~/.zplug.sh ] && source ~/.zplug.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then

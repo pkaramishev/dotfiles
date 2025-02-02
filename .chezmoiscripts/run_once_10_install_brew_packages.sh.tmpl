@@ -1,0 +1,42 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+
+# The next line will trigger the script on every MacOS update
+# MacOS build version: {{ output "sw_vers" "--buildVersion" }}
+
+formulae=(
+    git
+    git-delta
+    nano
+    wget
+    zplug
+    telnet
+    python3
+    maven
+)
+casks=(
+    aerial
+    stats
+    itsycal
+    google-chrome
+    iterm2
+    docker
+    telegram
+    zoom
+    yandex-music
+    vlc
+    temurin@21
+    intellij-idea-ce
+    visual-studio-code
+    sublime-text
+    dbeaver-community
+    postman
+)
+
+brew update
+
+brew install ${formulae[@]}
+brew install --cask ${casks[@]}
+
+brew cleanup
+{{ end }}

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# The next line will trigger the script on every VSCode update
+# VSCode version: {{ output "code" "-v" | replaceAllRegex "\n" " " }}
+
+code --install-extension asciidoctor.asciidoctor-vscode --force
+code --install-extension ms-azuretools.vscode-docker --force
+
+code --install-extension GraphQL.vscode-graphql --force
+code --install-extension GraphQL.vscode-graphql-syntax --force
+
+code --install-extension ms-python.debugpy --force
+code --install-extension ms-python.python --force
+code --install-extension ms-python.vscode-pylance --force
+
+code --install-extension ms-toolsai.jupyter --force
+code --install-extension ms-toolsai.jupyter-keymap --force
+code --install-extension ms-toolsai.jupyter-renderers --force
+code --install-extension ms-toolsai.vscode-jupyter-cell-tags --force
+code --install-extension ms-toolsai.vscode-jupyter-slideshow --force
+code --install-extension ms-vscode.makefile-tools --force

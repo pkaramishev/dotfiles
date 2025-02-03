@@ -49,3 +49,13 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='code --wait --new-window'
 fi
+
+# Functions to overwrite standard utilities
+
+function cat() {
+    bat --theme=default "$@"
+}
+
+function ls() {
+    eza -a --icons --no-user --no-time "$@"
+}

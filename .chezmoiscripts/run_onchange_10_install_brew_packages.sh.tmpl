@@ -38,8 +38,25 @@ casks=(
 
 brew update
 
-brew install ${formulae[@]}
-brew install --cask ${casks[@]}
+# Install or upgrade all formulae
+for formula in "${formulae[@]}"; do
+    if brew ls --versions "$formula" >/dev/null; then
+        HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade --force --formula "$formula"
+    else
+        HOMEBREW_NO_AUTO_UPDATE=1 brew install --force --formula "$formula"
+    fi
+done
+
+
+# Install or upgrade all casks
+for cask in "${casks[@]}"; do
+    if brew ls --versions --cask "$cask" >/dev/null; then
+        HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade --force --cask "$cask"
+    else
+        HOMEBREW_NO_AUTO_UPDATE=1 brew install --force --cask "$cask"
+    fi
+done
 
 brew cleanup
+
 {{ end }}

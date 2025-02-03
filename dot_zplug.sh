@@ -5,6 +5,8 @@ source $ZPLUG_HOME/init.zsh
 
 zplug "plugins/git", from:oh-my-zsh
 
+zplug "zap-zsh/exa"
+
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-autosuggestions", as:plugin, defer:2
 zplug 'zsh-users/zsh-completions', depth:1

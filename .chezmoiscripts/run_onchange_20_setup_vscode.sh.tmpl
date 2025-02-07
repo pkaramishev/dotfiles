@@ -3,21 +3,25 @@
 # The next line will trigger the script on every VSCode update
 # VSCode version: {{ output "code" "-v" | replaceAllRegex "\n" " " }}
 
+extensions=(
+    asciidoctor.asciidoctor-vscode
+    ms-azuretools.vscode-docker
+    GraphQL.vscode-graphql
+    GraphQL.vscode-graphql-syntax
+    ms-python.debugpy
+    ms-python.python
+    ms-python.vscode-pylance
+    ms-toolsai.jupyter
+    ms-toolsai.jupyter-keymap
+    ms-toolsai.jupyter-renderers
+    ms-toolsai.vscode-jupyter-cell-tags
+    ms-toolsai.vscode-jupyter-slideshow
+    ms-vscode.makefile-tools
+)
+
 echo "🛠️  Configuring VSCode preferences & plugins"
 
-code --install-extension asciidoctor.asciidoctor-vscode --force
-code --install-extension ms-azuretools.vscode-docker --force
-
-code --install-extension GraphQL.vscode-graphql --force
-code --install-extension GraphQL.vscode-graphql-syntax --force
-
-code --install-extension ms-python.debugpy --force
-code --install-extension ms-python.python --force
-code --install-extension ms-python.vscode-pylance --force
-
-code --install-extension ms-toolsai.jupyter --force
-code --install-extension ms-toolsai.jupyter-keymap --force
-code --install-extension ms-toolsai.jupyter-renderers --force
-code --install-extension ms-toolsai.vscode-jupyter-cell-tags --force
-code --install-extension ms-toolsai.vscode-jupyter-slideshow --force
-code --install-extension ms-vscode.makefile-tools --force
+# Install or upgrade all extensions
+for extension in "${extensions[@]}"; do
+    code --install-extension "$extension" --force
+done

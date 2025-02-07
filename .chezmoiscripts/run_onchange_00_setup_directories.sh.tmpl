@@ -1,0 +1,21 @@
+#!/bin/bash
+
+directories=(
+    ~/Projects/learning
+    ~/Projects/commercial
+    ~/Projects/personal
+    ~/Projects/open-source
+    ~/.cache
+)
+
+echo "📁  Configuring default directories"
+
+# Configure default directories
+for directory in "${directories[@]}"; do
+    if [ ! -d "$directory" ]; then
+        mkdir -m 700 -p "$directory"
+        echo "Directory '$directory' has been created"
+    else
+        echo "Directory '$directory' already exists"
+    fi
+done

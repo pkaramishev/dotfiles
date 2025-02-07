@@ -16,6 +16,7 @@ DISABLE_AUTO_TITLE="true" # Disable auto-setting terminal title.
 
 # Command history options
 
+HISTORY_IGNORE='(ls|cd|pwd|exit|date|history)' # Make some commands not show up in history
 HIST_STAMPS="dd.mm.yyyy" # Command execution timestamp shown in the history command output (see 'man strftime' for details)
 HISTFILE="$HOME/.cache/.zsh_history" # Location of the history file
 HISTSIZE=10000 # Limit of the lines to keep track of in history

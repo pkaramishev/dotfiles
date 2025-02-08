@@ -40,6 +40,8 @@ casks=(
 
 brew update
 
+echo "😎  Installing command-line applications"
+
 # Install or upgrade all formulae
 for formula in "${formulae[@]}"; do
     if brew ls --versions "$formula" >/dev/null; then
@@ -49,6 +51,7 @@ for formula in "${formulae[@]}"; do
     fi
 done
 
+echo "👀  Installing GUI applications"
 
 # Install or upgrade all casks
 for cask in "${casks[@]}"; do

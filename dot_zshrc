@@ -32,6 +32,10 @@ SHELL_SESSION_DIR="$HOME/.cache/.zsh_sessions"
 SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"                                                    
 mkdir -m 700 -p "$SHELL_SESSION_DIR"
 
+# Python options
+
+export PYTHON_HISTORY=~/.cache/.python_history
+
 # Oh-my-zsh caches
 
 export ZSH_COMPDUMP="$HOME/.cache/.zcompdump-$HOST"

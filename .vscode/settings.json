@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.yaml.tmpl": "yaml",
+        "*.sh.tmpl": "shellscript",
+        "dot_*rc": "shellscript",
+        "dot_gitconfig.tmpl": "ini"
+    }
+}

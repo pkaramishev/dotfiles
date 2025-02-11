@@ -166,7 +166,7 @@ defaults write com.apple.dock showhidden -bool true
 defaults write com.apple.dock show-recents -bool false
 
 # Set the icon size of Dock items to 32 pixels
-defaults write com.apple.dock tilesize -int 32
+defaults write com.apple.dock tilesize -int 64
 
 # Position on screen: bottom
 defaults write com.apple.dock orientation -string bottom

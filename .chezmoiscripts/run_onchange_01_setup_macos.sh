@@ -12,16 +12,29 @@ echo "🎨  Customizing MacOS settings"
 # General UI/UX                                                               #
 ###############################################################################
 
-# Use metric units
-defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
-defaults write NSGlobalDomain AppleMetricUnits -bool true
-defaults write NSGlobalDomain AppleTemperatureUnit -string "Celsius"
-
 # Save to disk by default, instead of iCloud
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
 # Set menu bar clock format
 defaults write com.apple.menuextra.clock IsAnalog -bool false
+
+# Expand save panel by default
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+
+###############################################################################
+# Localization                                                                #
+###############################################################################
+
+# Use metric units
+defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
+defaults write NSGlobalDomain AppleMetricUnits -bool true
+defaults write NSGlobalDomain AppleTemperatureUnit -string "Celsius"
+
+# Set language and text formats
+LANGUAGES=(en ru)
+defaults write NSGlobalDomain AppleLanguages -array ${LANGUAGES[@]}
+defaults write NSGlobalDomain AppleLocale -string "en_US@currency=RUB"
 
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
 sudo systemsetup -settimezone "Europe/Moscow" 2>/dev/null 1>&2
@@ -97,8 +110,70 @@ defaults write NSGlobalDomain com.apple.springing.enabled -bool true
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
+# Disable disk image verification
+defaults write com.apple.frameworks.diskimages skip-verify -bool true
+defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
+defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
+
+# Disable the warning before emptying the Trash
+defaults write com.apple.finder WarnOnEmptyTrash -bool false
+
 # Show the ~/Library folder
 chflags nohidden ~/Library
+
+# Show the /Volumes folder
+sudo chflags nohidden /Volumes
+
+# Expand File Info panes - “General”, “Open with”, and “Sharing & Permissions”
+defaults write com.apple.finder FXInfoPanesExpanded -dict \
+	General -bool true \
+	OpenWith -bool true \
+	Privileges -bool true
+
+# Open untitled file rather than iCloud syncing crap
+defaults write -g NSShowAppCentricOpenPanelInsteadOfUntitledFile -bool false
+
+###############################################################################
+# Calendar                                                                    #
+###############################################################################
+
+# Show week numbers (10.8 only)
+defaults write com.apple.iCal "Show Week Numbers" -bool true
+
+# Week starts on monday
+defaults write com.apple.iCal "first day of week" -int 1
+
+###############################################################################
+# Activity Monitor                                                            #
+###############################################################################
+
+# Show the main window when launching Activity Monitor
+defaults write com.apple.ActivityMonitor OpenMainWindow -bool true
+
+# Visualize CPU usage in the Activity Monitor Dock icon
+defaults write com.apple.ActivityMonitor IconType -int 5
+
+# Show all processes in Activity Monitor
+defaults write com.apple.ActivityMonitor ShowCategory -int 0
+
+# Sort Activity Monitor results by CPU usage
+defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
+defaults write com.apple.ActivityMonitor SortDirection -int 0
+
+###############################################################################
+# Screenshots                                                                 #
+###############################################################################
+
+# Save screenshots to the ~/Screenshots folder
+SCREENSHOTS_FOLDER="${HOME}/Pictures/Screenshots"
+mkdir -p "${SCREENSHOTS_FOLDER}"
+defaults write com.apple.screencapture location -string "${SCREENSHOTS_FOLDER}"
+
+# Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
+defaults write com.apple.screencapture type -string "png"
+
+# Disable shadow in screenshots
+defaults write com.apple.screencapture disable-shadow -bool true
 
 ###############################################################################
 # Menu bar, Dock, Dashboard, and hot corners                                  #
@@ -165,7 +240,7 @@ defaults write com.apple.dock showhidden -bool true
 # Don’t show recent applications in Dock
 defaults write com.apple.dock show-recents -bool false
 
-# Set the icon size of Dock items to 32 pixels
+# Set the icon size of Dock items to 64 pixels
 defaults write com.apple.dock tilesize -int 64
 
 # Position on screen: bottom
@@ -199,6 +274,27 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 # Bottom left screen corner
 defaults write com.apple.dock wvous-bl-corner -int 0
 defaults write com.apple.dock wvous-bl-modifier -int 0
+
+# Setup Dock panel
+dockutil --no-restart --remove all
+
+dock_apps=(
+    "/System/Applications/System Settings.app"
+    "/Applications/iTerm.app"
+    "/Applications/Docker.app"
+    "/Applications/Google Chrome.app"
+    "/Applications/Telegram.app"
+    "/Applications/Яндекс Музыка.app"
+    "/Applications/IntelliJ IDEA CE.app"
+    "/Applications/Visual Studio Code.app"
+    "/Applications/Sublime Text.app"
+    "/Applications/DBeaver.app"
+    "/Applications/Postman.app"
+)
+
+for app in "${dock_apps[@]}"; do
+    dockutil --no-restart --add "$app"
+done
 
 ###############################################################################
 # Networking                                                                  #
@@ -251,6 +347,13 @@ defaults write org.m0k.transmission WarningDonate -bool false
 defaults write org.m0k.transmission WarningLegal -bool false
 
 ###############################################################################
+# Time Machine                                                                #
+###############################################################################
+
+# Prevent Time Machine from prompting to use new hard drives as backup volume
+defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+
+###############################################################################
 # Wi-Fi                                                                       #
 ###############################################################################
 
@@ -285,8 +388,23 @@ defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
 # Software Update                                                             #
 ###############################################################################
 
-# sudo softwareupdate --schedule ON
-# sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate.plist AutomaticCheckEnabled -bool YES
+# Enable the automatic update check
+defaults write com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true
+
+# Check for software updates weekly (`dot update` includes software updates)
+defaults write com.apple.SoftwareUpdate ScheduleFrequency -string 7
+
+# Download newly available updates in background
+defaults write com.apple.SoftwareUpdate AutomaticDownload -bool true
+
+# Install System data files & security updates
+defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -bool true
+
+# Turn on app auto-update
+defaults write com.apple.commerce AutoUpdate -bool true
+
+# Allow the App Store to reboot machine on macOS updates
+defaults write com.apple.commerce AutoUpdateRestartRequired -bool true
 
 ###############################################################################
 # Accessibility                                                               #
@@ -295,6 +413,9 @@ defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
 ###############################################################################
 # Privacy & Security                                                          #
 ###############################################################################
+
+# Disable the “Are you sure you want to open this application?” dialog
+defaults write com.apple.LaunchServices LSQuarantine -bool false
 
 ###############################################################################
 # Lock Screen                                                                 #
@@ -310,6 +431,22 @@ sudo pmset -b displaysleep 10
 sudo pmset -c displaysleep 10
 
 ###############################################################################
+# Google Chrome                                                               #
+###############################################################################
+
+# Disable swipe navigation
+defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool false
+defaults write com.google.Chrome.canary AppleEnableSwipeNavigateWithScrolls -bool false
+
+# Use the system-native print preview dialog
+defaults write com.google.Chrome DisablePrintPreview -bool true
+defaults write com.google.Chrome.canary DisablePrintPreview -bool true
+
+# Expand the print dialog by default
+defaults write com.google.Chrome PMPrintingExpandedStateForPrint2 -bool true
+defaults write com.google.Chrome.canary PMPrintingExpandedStateForPrint2 -bool true
+
+###############################################################################
 # Apply Settings                                                              #
 ###############################################################################
 
@@ -318,6 +455,8 @@ processes=(
     Finder
     SystemUIServer
     "System Settings"
+    Calendar
+    iCal
 )
 
 for process in "${processes[@]}"; do

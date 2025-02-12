@@ -61,6 +61,10 @@ defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
+# Reveal IP address, hostname, OS version, etc. when clicking the clock
+# in the login window
+sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
+
 ###############################################################################
 # Finder                                                                      #
 ###############################################################################
@@ -293,7 +297,7 @@ dock_apps=(
 )
 
 for app in "${dock_apps[@]}"; do
-    dockutil --no-restart --add "$app"
+    dockutil --no-restart --add "$app" > /dev/null
 done
 
 ###############################################################################
@@ -447,6 +451,46 @@ defaults write com.google.Chrome PMPrintingExpandedStateForPrint2 -bool true
 defaults write com.google.Chrome.canary PMPrintingExpandedStateForPrint2 -bool true
 
 ###############################################################################
+# Spotlight                                                                   #
+###############################################################################
+
+defaults -currentHost write com.apple.Spotlight MenuItemHidden -int 1
+
+# Change indexing order and disable some search results
+defaults write com.apple.spotlight orderedItems -array \
+  '{"enabled" = 1;"name" = "APPLICATIONS";}' \
+  '{"enabled" = 1;"name" = "MENU_EXPRESSION";}' \
+  '{"enabled" = 1;"name" = "MENU_CONVERSION";}' \
+  '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
+  '{"enabled" = 1;"name" = "DIRECTORIES";}' \
+  '{"enabled" = 1;"name" = "PDF";}' \
+  '{"enabled" = 1;"name" = "SPREADSHEETS";}' \
+  '{"enabled" = 0;"name" = "FONTS";}' \
+  '{"enabled" = 0;"name" = "DOCUMENTS";}' \
+  '{"enabled" = 0;"name" = "MESSAGES";}' \
+  '{"enabled" = 0;"name" = "CONTACT";}' \
+  '{"enabled" = 0;"name" = "EVENT_TODO";}' \
+  '{"enabled" = 0;"name" = "IMAGES";}' \
+  '{"enabled" = 0;"name" = "BOOKMARKS";}' \
+  '{"enabled" = 0;"name" = "MUSIC";}' \
+  '{"enabled" = 0;"name" = "MOVIES";}' \
+  '{"enabled" = 0;"name" = "PRESENTATIONS";}' \
+  '{"enabled" = 0;"name" = "SOURCE";}' \
+  '{"enabled" = 0;"name" = "MENU_DEFINITION";}' \
+  '{"enabled" = 0;"name" = "MENU_OTHER";}' \
+  '{"enabled" = 0;"name" = "MENU_WEBSEARCH";}' \
+  '{"enabled" = 0;"name" = "MENU_SPOTLIGHT_SUGGESTIONS";}'
+
+# Load new settings before rebuilding the index
+killall mds > /dev/null 2>&1
+
+# Make sure indexing is enabled for the main volume
+sudo mdutil -i on / > /dev/null
+
+# Rebuild the index from scratch
+sudo mdutil -E / > /dev/null
+
+###############################################################################
 # Apply Settings                                                              #
 ###############################################################################
 
@@ -461,7 +505,7 @@ processes=(
 
 for process in "${processes[@]}"; do
     if pgrep "$process" &> /dev/null ; then 
-        sudo killall "$process" ; 
+        sudo killall "$process" > /dev/null 2>&1 ; 
     fi
 done
 

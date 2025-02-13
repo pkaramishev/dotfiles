@@ -18,7 +18,6 @@ DISABLE_AUTO_TITLE="true" # Disable auto-setting terminal title.
 
 HISTORY_IGNORE='(ls|cd|pwd|exit|date|history)' # Make some commands not show up in history
 HIST_STAMPS="dd.mm.yyyy" # Command execution timestamp shown in the history command output (see 'man strftime' for details)
-HISTFILE="$HOME/.cache/.zsh_history" # Location of the history file
 HISTSIZE=10000 # Limit of the lines to keep track of in history
 SAVEHIST=10000 # Limit of the command size to keep track of in history
 setopt APPEND_HISTORY # adds history
@@ -26,18 +25,15 @@ setopt HIST_IGNORE_ALL_DUPS # If a new command line being added to the history l
 setopt HIST_IGNORE_SPACE # No history when starting command with space
 setopt HIST_SAVE_NO_DUPS # When writing out the history file, older commands that duplicate newer ones are omitted
 
-# Sessions history options
+# Store all history dotfiles in dedicated directory
 
 SHELL_SESSION_DIR="$HOME/.cache/.zsh_sessions"
 SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"                                                    
 mkdir -m 700 -p "$SHELL_SESSION_DIR"
 
-# Python options
-
+export HISTFILE="$HOME/.cache/.zsh_history"
+export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export PYTHON_HISTORY=~/.cache/.python_history
-
-# Oh-my-zsh caches
-
 export ZSH_COMPDUMP="$HOME/.cache/.zcompdump-$HOST"
 
 # Configure ZSH with the above settings

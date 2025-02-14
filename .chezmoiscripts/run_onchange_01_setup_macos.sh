@@ -524,4 +524,4 @@ for process in "${processes[@]}"; do
     fi
 done
 
-echo "✅  Done. Note that some of these changes require a logout/restart to take effect."
+echo "✅  Done. MacOS has been configured. Note that some of these changes require a logout/restart to take effect."

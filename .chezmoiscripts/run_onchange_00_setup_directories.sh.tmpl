@@ -14,8 +14,10 @@ echo "📁  Configuring default directories"
 for directory in "${directories[@]}"; do
     if [ ! -d "$directory" ]; then
         mkdir -m 700 -p "$directory"
-        echo "Directory '$directory' has been created"
+        echo "➕  Directory '$directory' has been created"
     else
-        echo "Directory '$directory' already exists"
+        echo "🆗  Directory '$directory' already exists"
     fi
 done
+
+echo "✅  Done. All standard directories are in place."

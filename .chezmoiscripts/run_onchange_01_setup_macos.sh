@@ -18,6 +18,9 @@ defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 # Set menu bar clock format
 defaults write com.apple.menuextra.clock IsAnalog -bool false
 
+# Set menu bar datetime format
+defaults write com.apple.menuextra.clock "DateFormat" -string "\"EEE d MMM HH:mm:ss\""
+
 # Expand save panel by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
@@ -121,6 +124,18 @@ defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
 
 # Disable the warning before emptying the Trash
 defaults write com.apple.finder WarnOnEmptyTrash -bool false
+
+# Empty Trash securely by default
+defaults write com.apple.finder EmptyTrashSecurely -bool true
+
+# Automatically open a new Finder window when a volume is mounted
+defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
+
+# Expand the following File Info panes: 'General', 'Open with', and 'Sharing & Permissions'
+defaults write com.apple.finder FXInfoPanesExpanded -dict-add "General" -bool true
+defaults write com.apple.finder FXInfoPanesExpanded -dict-add "MetaData" -bool false
+defaults write com.apple.finder FXInfoPanesExpanded -dict-add "OpenWith" -bool true
+defaults write com.apple.finder FXInfoPanesExpanded -dict-add "Privileges" -bool true
 
 # Show the ~/Library folder
 chflags nohidden ~/Library

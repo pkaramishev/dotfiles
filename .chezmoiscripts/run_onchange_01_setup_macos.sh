@@ -18,8 +18,11 @@ defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 # Set menu bar clock format
 defaults write com.apple.menuextra.clock IsAnalog -bool false
 
+# Use 24-hour time
+defaults write NSGlobalDomain AppleICUForce24HourTime -bool true
+
 # Set menu bar datetime format
-defaults write com.apple.menuextra.clock "DateFormat" -string "\"EEE d MMM HH:mm:ss\""
+defaults write com.apple.menuextra.clock "DateFormat" -string "EEE d MMM HH:mm:ss"
 
 # Expand save panel by default
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true

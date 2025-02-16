@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Stop current instance of the IDE
+kill -9 $(ps aux | grep '.*[/]IntelliJ.*' | awk '{print $2}') > /dev/null 2>&1
+
+echo "🛠️  Configuring IntelliJ IDEA preferences & plugins"
+
+plugins=(
+    org.asciidoctor.intellij.asciidoc
+    ris58h.lacopom
+    mobi.hsz.idea.gitignore
+    ru.adelf.idea.dotenv
+    net.seesharpsoft.intellij.plugins.csv
+    MavenRunHelper
+)
+
+# Install or upgrade all plugins
+open -na "IntelliJ IDEA CE.app" --args installPlugins "${plugins[@]}"
+
+echo "✅  Done. IntelliJ IDEA is ready to be used"

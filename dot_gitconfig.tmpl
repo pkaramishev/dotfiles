@@ -4,15 +4,27 @@
 
 [core]
 	editor = code --wait --new-window
+	pager = delta
 
 [diff]
 	tool = default-difftool
 
+[interactive]
+    diffFilter = delta --color-only
+
 [difftool "default-difftool"]
 	cmd = code --wait --new-window --diff $LOCAL $REMOTE
 
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    side-by-side = true
+
 [merge]
 	tool = code
+    conflictStyle = zdiff3
 
 [mergetool "code"]
 	cmd = code --wait --new-window --merge $REMOTE $LOCAL $BASE $MERGED
+
+[init]
+  	defaultBranch = main

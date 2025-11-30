@@ -303,7 +303,7 @@ dockutil --no-restart --remove all
 dock_apps=(
     "/System/Applications/System Settings.app"
     "/Applications/iTerm.app"
-    "/Applications/Docker.app"
+    "/Applications/Podman Desktop.app"
     "/Applications/Google Chrome.app"
     "/Applications/Telegram.app"
     "/Applications/Яндекс Музыка.app"
@@ -311,7 +311,13 @@ dock_apps=(
     "/Applications/Visual Studio Code.app"
     "/Applications/Sublime Text.app"
     "/Applications/DBeaver.app"
+    "/Applications/Redis Insight.app"
     "/Applications/Postman.app"
+    "/Applications/Freelens.app"
+    "/Applications/Goose.app"
+    "/Applications/Microsoft Outlook.app"
+    "/Applications/Mattermost.app"
+    "/Applications/zoom.us.app"
 )
 
 for app in "${dock_apps[@]}"; do

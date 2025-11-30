@@ -51,6 +51,9 @@ else
   export EDITOR='code --wait --new-window'
 fi
 
+# Goose environment variables
+export GOOSE_RECIPE_PATH="$HOME/.config/goose/recipes"
+
 # Functions to overwrite standard utilities
 
 function cat() {
@@ -60,3 +63,7 @@ function cat() {
 function ls() {
     eza -a --icons --no-user --no-time "$@"
 }
+
+# sdkman settings - MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

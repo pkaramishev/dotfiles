@@ -9,12 +9,13 @@ echo "💰  Setting up Homebrew packages"
 formulae=(
     git
     git-delta
+    git-cliff
+    gitversion
     nano
     wget
     zplug
     telnet
     python3
-    maven
     bat
     eza
     htop
@@ -23,6 +24,10 @@ formulae=(
     dockutil
     chezmoi
     curl
+    glab
+    block-goose-cli
+    pygments
+    podman
 )
 casks=(
     aerial
@@ -30,18 +35,22 @@ casks=(
     itsycal
     google-chrome
     iterm2
-    docker
+    podman-desktop
     telegram
     zoom
     yandex-music
     vlc
-    temurin@21
-    intellij-idea-ce
     visual-studio-code
     sublime-text
     dbeaver-community
     postman
     font-hack-nerd-font
+    freelens
+    memoryanalyzer
+    block-goose
+    bettermouse
+    redis-insight
+#    intellij-idea-ce -- Disabled for not because of you know what. Install OpenIDE manually instead.
 )
 
 brew update

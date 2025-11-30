@@ -2,7 +2,7 @@
 
 ## Installation
 
-Just run `sh install.sh`
+Just run `sh install.sh` or `install.bat`
 
 ## Troubleshooting
 

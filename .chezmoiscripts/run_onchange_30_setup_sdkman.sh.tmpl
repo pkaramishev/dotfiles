@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Initialize sdkman if available
+if [ -f "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+    echo "✅  sdkman initialized"
+else
+    echo "❌  sdkman init script not found"
+    exit 1
+fi
+
+# Verify sdkman installation
+if ! command -v sdk >/dev/null 2>&1; then
+    echo "❌  sdk command is not available after initialization"
+    exit 1
+fi
+
+echo "🛠️  Configuring sdkman preferences & components"
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# Install Java
+echo "🛠️  Installing Java (Temurin)"
+echo "n" | sdk install java 21-tem
+echo "Y" | sdk install java 25-tem
+sdk default java 25-tem
+
+# Install Build Tools
+echo "🛠️  Installing Build Tools"
+echo "Y" | sdk install gradle
+echo "Y" | sdk install maven
+
+echo "✅  Done. sdkman and all the necessary SDKs are configured"

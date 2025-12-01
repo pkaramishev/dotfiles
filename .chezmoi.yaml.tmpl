@@ -1,6 +1,14 @@
 {{- $full_name := promptStringOnce . "full_name" "👤  What's your full name" -}}
 {{- $email := promptStringOnce . "email" "📧  What's your primary email for this machine" -}}
 
+{{- $use_case_choices := list "write_code" "chat_in_private" "work" "use_llm" "host_llm" "play_games" "listen_music" -}}
+{{- $use_cases := promptMultichoiceOnce
+    . "use_cases"
+    "🕹️  What will you do on this machine"
+    $use_case_choices
+    (list "write_code" "work" "use_llm" "listen_music")
+-}}
+
 edit:
   command: code
   args: [ "--wait" ]
@@ -9,3 +17,5 @@ data:
   user:
     full_name: {{ $full_name | quote }}
     email: {{ $email | quote }}
+
+  use_cases: {{ $use_cases | toToml }}

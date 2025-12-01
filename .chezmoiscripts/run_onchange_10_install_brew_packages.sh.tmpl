@@ -7,15 +7,13 @@
 echo "💰  Setting up Homebrew packages"
 
 formulae=(
+    # Essentials  
     git
-    git-delta
-    git-cliff
-    gitversion
     nano
     wget
-    zplug
-    telnet
+    curl
     python3
+    zplug
     bat
     eza
     htop
@@ -23,34 +21,70 @@ formulae=(
     openssl
     dockutil
     chezmoi
-    curl
-    glab
+
+    # Coding tools
+    {{- if (has "write_code" .use_cases) -}}
+    git-delta
+    git-cliff
+    gitversion
+    telnet
+    podman
+    podman-compose
+    {{ end }}
+
+    # LLM
+    {{- if (has "use_llm" .use_cases) -}}
     block-goose-cli
     pygments
-    podman
+    {{ end }}
+
+    # Job-specific customizations
+    {{- if (has "work" .use_cases) -}}
+    glab
+    {{ end }}
 )
 casks=(
+    # Essentials
     aerial
     stats
     itsycal
     google-chrome
     iterm2
-    podman-desktop
-    telegram
-    zoom
-    yandex-music
-    vlc
-    visual-studio-code
     sublime-text
-    dbeaver-community
-    postman
     font-hack-nerd-font
-    freelens
-    memoryanalyzer
-    block-goose
     bettermouse
+    vlc
+
+    # Coding tools
+    {{- if (has "write_code" .use_cases) -}}
+    # intellij-idea-ce -- Disabled for not because of you know what. Install OpenIDE manually instead.
+    visual-studio-code
+    podman-desktop
+    dbeaver-community
+    {{ end }}
+
+    # LLM
+    {{- if (has "use_llm" .use_cases) -}}
+    block-goose
+    {{ end }}
+
+    # Private chats
+    {{- if (has "chat_in_private" .use_cases) -}}
+    telegram
+    {{ end }}
+
+    # Music
+    {{- if (has "listen_music" .use_cases) -}}
+    yandex-music
+    {{ end }}
+
+    # Job-specific customizations
+    {{- if (has "work" .use_cases) -}}
+    memoryanalyzer
     redis-insight
-#    intellij-idea-ce -- Disabled for not because of you know what. Install OpenIDE manually instead.
+    postman
+    freelens
+    {{ end }}
 )
 
 brew update
@@ -79,6 +113,5 @@ done
 
 brew cleanup
 
-{{ end }}
-
 echo "✅  Done. All applications has been installed."
+{{ end }}

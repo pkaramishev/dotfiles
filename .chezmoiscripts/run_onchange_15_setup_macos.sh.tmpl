@@ -1,3 +1,4 @@
+{{- if (eq .chezmoi.os "darwin") -}}
 #! /bin/sh
 
 # To find settings that were changed manually, run
@@ -301,23 +302,44 @@ defaults write com.apple.dock wvous-bl-modifier -int 0
 dockutil --no-restart --remove all
 
 dock_apps=(
+    # Essentials
     "/System/Applications/System Settings.app"
     "/Applications/iTerm.app"
-    "/Applications/Podman Desktop.app"
     "/Applications/Google Chrome.app"
-    "/Applications/Telegram.app"
-    "/Applications/Яндекс Музыка.app"
-    "/Applications/IntelliJ IDEA CE.app"
-    "/Applications/Visual Studio Code.app"
     "/Applications/Sublime Text.app"
+
+    # Private chats
+    {{- if (has "chat_in_private" .use_cases) -}}
+    "/Applications/Telegram.app"
+    {{ end }}
+
+    # Music
+    {{- if (has "listen_music" .use_cases) -}}
+    "/Applications/Яндекс Музыка.app"
+    {{ end }}
+
+    # Coding tools
+    {{- if (has "write_code" .use_cases) -}}
+    # "/Applications/IntelliJ IDEA CE.app"
+    "/Applications/Visual Studio Code.app"
+    "/Applications/Podman Desktop.app"
     "/Applications/DBeaver.app"
+    {{ end }}
+
+    # Job-specific customizations
+    {{- if (has "work" .use_cases) -}}
     "/Applications/Redis Insight.app"
-    "/Applications/Postman.app"
-    "/Applications/Freelens.app"
-    "/Applications/Goose.app"
     "/Applications/Microsoft Outlook.app"
     "/Applications/Mattermost.app"
     "/Applications/zoom.us.app"
+    "/Applications/Postman.app"
+    "/Applications/Freelens.app"
+    {{ end }}
+
+    # LLM
+    {{- if (has "use_llm" .use_cases) -}}
+    "/Applications/Goose.app"
+    {{ end }}
 )
 
 for app in "${dock_apps[@]}"; do
@@ -534,3 +556,4 @@ for process in "${processes[@]}"; do
 done
 
 echo "✅  Done. MacOS has been configured. Note that some of these changes require a logout/restart to take effect."
+{{ end }}

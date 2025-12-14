@@ -19,7 +19,7 @@ packages=(
     # zplug
     # bat
 
-    {{- if (not (has "work" .use_cases)) -}}
+    {{ if (not (has "work" .use_cases)) -}}
     Google.Chrome
     {{ end }}
     SublimeHQ.SublimeText.4
@@ -28,7 +28,7 @@ packages=(
     # iterm2
 
     # Coding tools
-    {{- if (has "write_code" .use_cases) -}}
+    {{ if (has "write_code" .use_cases) -}}
     dandavison.delta
     orhun.git-cliff
     GitTools.GitVersion
@@ -42,24 +42,24 @@ packages=(
     {{ end }}
 
     # LLM
-    {{- if (has "use_llm" .use_cases) -}}
+    {{ if (has "use_llm" .use_cases) -}}
     # block-goose-cli
     # block-goose
     # pygments
     {{ end }}
 
     # Private chats
-    {{- if (has "chat_in_private" .use_cases) -}}
+    {{ if (has "chat_in_private" .use_cases) -}}
     Telegram.TelegramDesktop
     {{ end }}
 
     # Music
-    {{- if (has "listen_music" .use_cases) -}}
+    {{ if (has "listen_music" .use_cases) -}}
     Yandex.Music
     {{ end }}
 
     # Gaming
-    {{- if (has "play_games" .use_cases) -}}
+    {{ if (has "play_games" .use_cases) -}}
     Valve.Steam
     {{ end }}
 )

@@ -23,7 +23,7 @@ formulae=(
     dockutil
 
     # Coding tools
-    {{- if (has "write_code" .use_cases) -}}
+    {{ if (has "write_code" .use_cases) -}}
     git-delta
     git-cliff
     gitversion
@@ -34,19 +34,19 @@ formulae=(
     {{ end }}
 
     # LLM
-    {{- if (has "use_llm" .use_cases) -}}
+    {{ if (has "use_llm" .use_cases) -}}
     block-goose-cli
     pygments
     {{ end }}
 
     # Job-specific customizations
-    {{- if (has "work" .use_cases) -}}
+    {{ if (has "work" .use_cases) -}}
     glab
     {{ end }}
 )
 casks=(
     # Essentials
-    {{- if (not (has "work" .use_cases)) -}}
+    {{ if (not (has "work" .use_cases)) -}}
     google-chrome
     {{ end }}
     sublime-text
@@ -60,7 +60,7 @@ casks=(
     bettermouse
 
     # Coding tools
-    {{- if (has "write_code" .use_cases) -}}
+    {{ if (has "write_code" .use_cases) -}}
     # intellij-idea-ce -- Disabled for not because of you know what. Install OpenIDE manually instead.
     visual-studio-code
     podman-desktop
@@ -68,32 +68,33 @@ casks=(
     {{ end }}
 
     # LLM
-    {{- if (has "use_llm" .use_cases) -}}
+    {{ if (has "use_llm" .use_cases) -}}
     block-goose
     {{ end }}
 
     # Private chats
-    {{- if (has "chat_in_private" .use_cases) -}}
+    {{ if (has "chat_in_private" .use_cases) -}}
     telegram
     {{ end }}
 
     # Music
-    {{- if (has "listen_music" .use_cases) -}}
+    {{ if (has "listen_music" .use_cases) -}}
     yandex-music
     {{ end }}
 
     # Gaming
-    {{- if (has "play_games" .use_cases) -}}
+    {{ if (has "play_games" .use_cases) -}}
     steam
     {{ end }}
 
     # Job-specific customizations
-    {{- if (has "work" .use_cases) -}}
+    {{ if (has "work" .use_cases) -}}
     memoryanalyzer
     redis-insight
     postman
     freelens
     {{ end }}
+    
 )
 
 brew tap sdkman/tap --quiet

@@ -1,0 +1,84 @@
+{{- if eq .chezmoi.os "windows" }}
+#!/bin/bash
+
+# The next line will trigger the script on every Windows update
+# Windows version: {{ output "cmd" "/c" "ver" }}
+
+echo "💰  Setting up WinGet packages"
+
+packages=(
+    # Essentials  
+    twpayne.chezmoi
+    Git.Git
+    GNU.Nano
+    GNU.Wget2
+    cURL.cURL
+    Python.Python.3.13
+    ShiningLight.OpenSSL.Dev
+    eza-community.eza
+    # zplug
+    # bat
+
+    {{- if (not (has "work" .use_cases)) -}}
+    Google.Chrome
+    {{ end }}
+    SublimeHQ.SublimeText.4
+    VideoLAN.VLC
+    SourceFoundry.HackFonts
+    # iterm2
+
+    # Coding tools
+    {{- if (has "write_code" .use_cases) -}}
+    dandavison.delta
+    orhun.git-cliff
+    GitTools.GitVersion
+    PuTTY.PuTTY # as alternative to telnet
+    RedHat.Podman
+    # sdkman-cli
+    # JetBrains.IntelliJIDEA.Community -- Disabled for not because of you know what. Install OpenIDE manually instead.
+    Microsoft.VisualStudioCode
+    RedHat.Podman-Desktop
+    dbeaver.dbeaver
+    {{ end }}
+
+    # LLM
+    {{- if (has "use_llm" .use_cases) -}}
+    # block-goose-cli
+    # block-goose
+    # pygments
+    {{ end }}
+
+    # Private chats
+    {{- if (has "chat_in_private" .use_cases) -}}
+    Telegram.TelegramDesktop
+    {{ end }}
+
+    # Music
+    {{- if (has "listen_music" .use_cases) -}}
+    Yandex.Music
+    {{ end }}
+
+    # Gaming
+    {{- if (has "play_games" .use_cases) -}}
+    Valve.Steam
+    {{ end }}
+)
+
+echo "😎  Installing/Updating applications"
+
+# Update winget source first
+winget source update
+
+# Install or upgrade all packages
+for package in "${packages[@]}"; do
+    if winget list --id "$package" --exact >/dev/null 2>&1; then
+        echo "🔄  Updating $package"
+        winget upgrade --id "$package" --exact --silent --force
+    else
+        echo "📥  Installing $package"
+        winget install --id "$package" --exact --silent
+    fi
+done
+
+echo "✅  Done. All applications have been installed/updated."
+{{ end }}

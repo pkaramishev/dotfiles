@@ -7,20 +7,20 @@
 echo "💰  Setting up Homebrew packages"
 
 formulae=(
-    # Essentials  
+    # Essentials
+    chezmoi
     git
     nano
     wget
     curl
     python3
+    openssl
+    eza
     zplug
     bat
-    eza
-    htop
-    iftop
-    openssl
+
+    # Custom MacOS tools
     dockutil
-    chezmoi
 
     # Coding tools
     {{- if (has "write_code" .use_cases) -}}
@@ -46,15 +46,18 @@ formulae=(
 )
 casks=(
     # Essentials
-    aerial
+    {{- if (not (has "work" .use_cases)) -}}
+    google-chrome
+    {{ end }}
+    sublime-text
+    vlc
+    font-hack-nerd-font
+
+    # Custom MacOS tools
     stats
     itsycal
-    google-chrome
     iterm2
-    sublime-text
-    font-hack-nerd-font
     bettermouse
-    vlc
 
     # Coding tools
     {{- if (has "write_code" .use_cases) -}}
@@ -79,6 +82,11 @@ casks=(
     yandex-music
     {{ end }}
 
+    # Gaming
+    {{- if (has "play_games" .use_cases) -}}
+    steam
+    {{ end }}
+
     # Job-specific customizations
     {{- if (has "work" .use_cases) -}}
     memoryanalyzer
@@ -88,16 +96,19 @@ casks=(
     {{ end }}
 )
 
-brew update
+brew tap sdkman/tap --quiet
+brew update --quiet
 
 echo "😎  Installing command-line applications"
 
 # Install or upgrade all formulae
 for formula in "${formulae[@]}"; do
     if brew ls --versions "$formula" >/dev/null; then
-        HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade --force --formula "$formula"
+        echo "🔄  Updating formula $formula"
+        HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade --quiet --force --formula "$formula"
     else
-        HOMEBREW_NO_AUTO_UPDATE=1 brew install --force --formula "$formula"
+        echo "📥  Installing formula $formula"
+        HOMEBREW_NO_AUTO_UPDATE=1 brew install --quiet --force --formula "$formula"
     fi
 done
 
@@ -106,13 +117,15 @@ echo "👀  Installing GUI applications"
 # Install or upgrade all casks
 for cask in "${casks[@]}"; do
     if brew ls --versions --cask "$cask" >/dev/null; then
-        HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade --force --cask "$cask"
+        echo "🔄  Updating cask $cask"
+        HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade --quiet --force --cask "$cask"
     else
-        HOMEBREW_NO_AUTO_UPDATE=1 brew install --force --cask "$cask"
+        echo "📥  Installing cask $cask"
+        HOMEBREW_NO_AUTO_UPDATE=1 brew install --quiet --force --cask "$cask"
     fi
 done
 
-brew cleanup
+brew cleanup --quiet
 
 echo "✅  Done. All applications has been installed."
 {{ end }}

@@ -4,13 +4,6 @@ setlocal enabledelayedexpansion
 echo.
 echo "🤚  Initializing everything from scratch..."
 
-:: Ask user to setup prerequisites for a successful initialization
-echo "🤚  First things first:"
-echo "1️⃣  Go to https://github.com/settings/tokens and generate new access token for this machine"
-echo "2️⃣  Make sure Git for Windows is installed (comes with Git Bash)"
-
-pause | set /p dummyName="    Once you're done, press any key to continue or Ctrl+C to abort..."
-
 :: Check if winget is available (should be on Windows 10 1709 or later, Windows 11)
 where winget >nul 2>&1
 if %errorlevel% neq 0 (
@@ -19,6 +12,20 @@ if %errorlevel% neq 0 (
     exit /b 1
 ) else (
     echo "✅  winget is already available, will use it to setup all the necessary packages"
+)
+
+:: Install git using winget
+where git >nul 2>&1
+if %errorlevel% neq 0 (
+    echo "👊  Installing git"
+    winget install -e --id Git.Git
+    if !errorlevel! neq 0 (
+        echo "❌  Failed to install git"
+        exit /b 1
+    )
+    echo "✅  git installed successfully"
+) else (
+    echo "✅  git already installed"
 )
 
 :: Install chezmoi using winget
@@ -40,8 +47,8 @@ if exist "%USERPROFILE%\.local\share\chezmoi\.git" (
   echo "🚸  chezmoi already initialized"
   echo "    Reinitialize with: 'chezmoi init https://github.com/pkaramishev/dotfiles.git'"
 ) else (
-  echo "🚀  Initialize dotfiles with:"
-  echo "    chezmoi init https://github.com/pkaramishev/dotfiles.git"
+  echo "🚀  Initializing chezmoi"
+  chezmoi init https://github.com/pkaramishev/dotfiles.git
 )
 
 echo.

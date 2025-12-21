@@ -1,3 +1,12 @@
 README.md
 install.sh
 install.bat
+
+{{ if eq .chezmoi.os "darwin" }}
+tdb.json
+{{ end }}
+
+{{ if eq .chezmoi.os "windows" }}
+.iterm
+.sdkman
+{{ end }}

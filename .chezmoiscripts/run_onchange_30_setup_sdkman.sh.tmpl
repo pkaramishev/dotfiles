@@ -1,8 +1,12 @@
+{{- if (eq .chezmoi.os "darwin") -}}
 #!/bin/bash
 
+# Put .sdkman to home directory so that initialization script could work without calling brew
+export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
+
 # Initialize sdkman if available
-if [ -f "$HOME/.sdkman/bin/sdkman-init.sh" ]; then
-    source "$HOME/.sdkman/bin/sdkman-init.sh"
+if [ -f "$SDKMAN_DIR/bin/sdkman-init.sh" ]; then
+    source "$SDKMAN_DIR/bin/sdkman-init.sh"
     echo "✅  sdkman initialized"
 else
     echo "❌  sdkman init script not found"
@@ -16,7 +20,7 @@ if ! command -v sdk >/dev/null 2>&1; then
 fi
 
 echo "🛠️  Configuring sdkman preferences & components"
-source "$HOME/.sdkman/bin/sdkman-init.sh"
+source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 # Install Java
 echo "🛠️  Installing Java (Temurin)"
@@ -30,3 +34,4 @@ echo "Y" | sdk install gradle
 echo "Y" | sdk install maven
 
 echo "✅  Done. sdkman and all the necessary SDKs are configured"
+{{ end }}

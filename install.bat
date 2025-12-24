@@ -47,7 +47,7 @@ if %errorlevel% neq 0 (
 echo 🚀  Initializing chezmoi
 set "BASH_PATH=%ProgramFiles%\Git\bin\bash.exe"
 set "CMD_TO_RUN=chezmoi init --apply --purge https://github.com/pkaramishev/dotfiles.git; exec bash"
-powershell -Command "Start-Process '%BASH_PATH%' -ArgumentList '--login', '-i', '-c', '%CMD_TO_RUN%' -Verb RunAs"
+powershell -Command "Start-Process '%BASH_PATH%' -ArgumentList '--login', '-i', '-c', '\"%CMD_TO_RUN%\"' -Verb RunAs"
 
 echo ✅  Done. Initialization will proceed in a different window
 

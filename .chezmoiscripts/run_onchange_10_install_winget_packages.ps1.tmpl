@@ -1,0 +1,93 @@
+{{- if eq .chezmoi.os "windows" -}}
+
+# The next line will trigger the script on every Windows update
+# Windows version: {{ .chezmoi.windowsVersion.currentVersion }}
+
+Write-Host "💰  Setting up WinGet packages"
+
+$packages = @(
+    # Essentials
+    "twpayne.chezmoi"
+    "Git.Git"
+    "GNU.Nano"
+    "GNU.Wget2"
+    "cURL.cURL"
+    "Python.Python.3.13"
+    "ShiningLight.OpenSSL.Dev"
+    "eza-community.eza"
+    # "zplug"
+    # "bat"
+
+    # Custom Windows tools
+    "Microsoft.PowerShell"
+
+    {{ if (not (has "work" .use_cases)) -}}
+    "Google.Chrome"
+    {{ end }}
+    "SublimeHQ.SublimeText.4"
+    "VideoLAN.VLC"
+    "SourceFoundry.HackFonts"
+    # "iterm2"
+
+    # Coding tools
+    {{ if (has "write_code" .use_cases) -}}
+    "dandavison.delta"
+    "orhun.git-cliff"
+    "GitTools.GitVersion"
+    "PuTTY.PuTTY" # as alternative to telnet
+    "RedHat.Podman"
+    # "sdkman-cli"
+    # "JetBrains.IntelliJIDEA.Community" -- Disabled for not because of you know what. Install OpenIDE manually instead.
+    "Microsoft.VisualStudioCode"
+    "RedHat.Podman-Desktop"
+    "dbeaver.dbeaver"
+    {{ end }}
+
+    # LLM
+    {{ if (has "use_llm" .use_cases) -}}
+    # "block-goose-cli"
+    # "block-goose"
+    # "pygments"
+    {{ end }}
+
+    # Private chats
+    {{ if (has "chat_in_private" .use_cases) -}}
+    "Telegram.TelegramDesktop"
+    {{ end }}
+
+    # Music
+    {{ if (has "listen_music" .use_cases) -}}
+    "Yandex.Music"
+    {{ end }}
+
+    # Gaming
+    {{ if (has "play_games" .use_cases) -}}
+    "Valve.Steam"
+    "Modrinth.ModrinthApp"
+    {{ end }}
+)
+
+Write-Host "😎  Installing/Updating applications"
+
+# Update winget source first
+winget source update
+
+# Install or upgrade all packages
+foreach ($package in $packages) {
+    if (string::IsNullOrWhiteSpace($package)) { continue }
+    
+    # Check if package is already installed
+    $null = winget list --id $package --exact
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "🔄  Updating $package"
+        winget upgrade --id $package --exact --silent --accept-package-agreements --accept-source-agreements --force
+    } else {
+        Write-Host "📥  Installing $package"
+        winget install --id $package --exact --silent --accept-package-agreements --accept-source-agreements
+    }
+}
+
+Write-Host "✅  Done. All applications have been installed/updated."
+Write-Host "⚠️  Unfortunately, you have to manually rerun chezmoi apply in a new terminal to capture PATH updates"
+
+{{ end }}

@@ -44,9 +44,16 @@ if %errorlevel% neq 0 (
 )
 
 :: Initialize chezmoi from scratch
-echo 🚀  Initializing chezmoi
 set "BASH_PATH=%ProgramFiles%\Git\bin\bash.exe"
-set "CMD_TO_RUN=chezmoi init --apply --purge https://github.com/pkaramishev/dotfiles.git; exec bash"
+
+if exist "%USERPROFILE%\.local\share\chezmoi\.git" (
+  echo 🚸  chezmoi already initialized. Reapplying the changes
+  set "CMD_TO_RUN=chezmoi update --apply; exec bash"
+) else (
+  echo 🚀  Initializing chezmoi
+  set "CMD_TO_RUN=chezmoi init --apply https://github.com/pkaramishev/dotfiles.git; exec bash"
+)
+
 powershell -Command "Start-Process '%BASH_PATH%' -ArgumentList '--login', '-i', '-c', '\"%CMD_TO_RUN%\"' -Verb RunAs"
 
 echo ✅  Done. Initialization will proceed in a different window

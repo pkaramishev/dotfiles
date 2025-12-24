@@ -1,5 +1,5 @@
 # Set the default line ending to LF
 * text=auto eol=lf
 
-# Force CRLF for batch files
-*.bat text eol=crlf
+# Don't run conversion on bat files - they have to be CLRF as locally
+*.bat -text

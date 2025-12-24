@@ -73,10 +73,10 @@ winget source update
 for package in "${packages[@]}"; do
     if winget list --id "$package" --exact >/dev/null 2>&1; then
         echo "🔄  Updating $package"
-        winget upgrade --id "$package" --exact --silent --force
+        winget upgrade --id "$package" --exact --silent --accept-package-agreements --accept-source-agreements --force
     else
         echo "📥  Installing $package"
-        winget install --id "$package" --exact --silent
+        winget install --id "$package" --exact --silent --accept-package-agreements --accept-source-agreements
     fi
 done
 

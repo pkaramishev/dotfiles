@@ -19,9 +19,9 @@ if %errorlevel% neq 0 (
 where git >nul 2>&1
 if %errorlevel% neq 0 (
     echo "👊  Installing git"
-    winget install -e --id Git.Git
+    winget install --silent --accept-package-agreements --accept-source-agreements -e --id Git.Git
     if !errorlevel! neq 0 (
-        echo "❌  Failed to install git"
+        echo "❌  Failed to install git. Check if it's already installed and `git` console command is available"
         exit /b 1
     )
     echo "✅  git installed successfully"
@@ -33,9 +33,9 @@ if %errorlevel% neq 0 (
 where chezmoi >nul 2>&1
 if %errorlevel% neq 0 (
     echo "👊  Installing chezmoi"
-    winget install -e --id twpayne.chezmoi
+    winget install --silent --accept-package-agreements --accept-source-agreements -e --id twpayne.chezmoi
     if !errorlevel! neq 0 (
-        echo "❌  Failed to install chezmoi"
+        echo "❌  Failed to install chezmoi. Check if it's already installed and `chezmoi` console command is available"
         exit /b 1
     )
     echo "✅  chezmoi installed successfully"
@@ -45,7 +45,7 @@ if %errorlevel% neq 0 (
 
 :: Initialize chezmoi from scratch
 echo "🚀  Initializing chezmoi"
-start "" "%ProgramFiles%\Git\git-bash.exe" --login -c "chezmoi init --apply --purge https://github.com/pkaramishev/dotfiles.git; exec bash" && exit
+start "" "%ProgramFiles%\Git\git-bash.exe" --login -i -c "chezmoi init --apply --purge https://github.com/pkaramishev/dotfiles.git; exec bash"
 
 echo.
 echo "✅  Done."

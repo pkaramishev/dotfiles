@@ -1,9 +1,6 @@
 {{- if eq .chezmoi.os "windows" -}}
 #!/bin/bash
 
-# The next line will trigger the script on every Windows update
-# Windows version: {{ output "cmd" "/c" "ver" }}
-
 echo "💰  Setting up WinGet packages"
 
 packages=(
@@ -81,4 +78,6 @@ for package in "${packages[@]}"; do
 done
 
 echo "✅  Done. All applications have been installed/updated."
+echo "⚠️  Unfortunatelly, you have to manually rerun chezmoi apply in a new terminal to capture PATH updates"
+
 {{ end }}

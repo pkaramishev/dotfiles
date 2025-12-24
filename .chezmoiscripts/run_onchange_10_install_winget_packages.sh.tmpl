@@ -1,6 +1,9 @@
 {{- if eq .chezmoi.os "windows" -}}
 #!/bin/bash
 
+# The next line will trigger the script on every Windows update
+# Windows version: {{ .chezmoi.windowsVersion.currentVersion }}
+
 echo "💰  Setting up WinGet packages"
 
 packages=(
@@ -58,6 +61,7 @@ packages=(
     # Gaming
     {{ if (has "play_games" .use_cases) -}}
     Valve.Steam
+    Modrinth.ModrinthApp
     {{ end }}
 )
 

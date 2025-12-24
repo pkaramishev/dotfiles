@@ -50,6 +50,6 @@ set "CMD_TO_RUN=chezmoi init --apply --purge https://github.com/pkaramishev/dotf
 mshta vbscript:Execute("CreateObject(""Shell.Application"").ShellExecute ""%SH_PATH%"", ""--login -i -c """"%CMD_TO_RUN%"""""", """", ""runas"", 1:close")
 
 echo ✅  Done. Initialization will proceed in a different window
-endlocal
 
+endlocal
 exit

@@ -45,8 +45,11 @@ if %errorlevel% neq 0 (
 
 :: Initialize chezmoi from scratch
 echo 🚀  Initializing chezmoi
-start "" "%ProgramFiles%\Git\bin\sh.exe" --login -i -c "chezmoi init --apply --purge https://github.com/pkaramishev/dotfiles.git; exec bash"
+set "BASH_PATH=%ProgramFiles%\Git\bin\bash.exe"
+set "CMD_TO_RUN=chezmoi init --apply --purge https://github.com/pkaramishev/dotfiles.git; exec bash"
+mshta vbscript:Execute("CreateObject(""Shell.Application"").ShellExecute ""%SH_PATH%"", ""--login -i -c """"%CMD_TO_RUN%"""""", """", ""runas"", 1:close")
 
-echo ✅  Done
-
+echo ✅  Done. Initialization will proceed in a different window
 endlocal
+
+exit

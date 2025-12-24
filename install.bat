@@ -1,5 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
+chcp 65001>nul
 
 echo.
 echo "🤚  Initializing everything from scratch..."

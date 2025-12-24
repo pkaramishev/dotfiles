@@ -45,7 +45,7 @@ if %errorlevel% neq 0 (
 
 :: Initialize chezmoi from scratch
 echo 🚀  Initializing chezmoi
-start "" "%ProgramFiles%\Git\git-bash.exe" --login -i -c "chezmoi init --apply --purge https://github.com/pkaramishev/dotfiles.git; exec bash"
+start "" "%ProgramFiles%\Git\bin\sh.exe" --login -i -c "chezmoi init --apply --purge https://github.com/pkaramishev/dotfiles.git; exec bash"
 
 echo ✅  Done
 

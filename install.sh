@@ -16,13 +16,9 @@ fi
 command -v chezmoi >/dev/null 2>&1 || \
   (echo '👊  Installing chezmoi' && brew install chezmoi)
 
-if [ -d "$HOME/.local/share/chezmoi/.git" ]; then
-  echo "🚸  chezmoi already initialized"
-  echo "    Reinitialize with: 'chezmoi init https://github.com/pkaramishev/dotfiles.git'"
-else
-  echo "🚀  Initializing chezmoi"
-  chezmoi init https://github.com/pkaramishev/dotfiles.git
-fi
+# Initialize chezmoi from scratch
+echo "🚀  Initializing chezmoi"
+chezmoi init --apply --purge https://github.com/pkaramishev/dotfiles.git
 
 echo ""
 echo "✅  Done."

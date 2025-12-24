@@ -42,14 +42,9 @@ if %errorlevel% neq 0 (
     echo "✅  chezmoi already installed"
 )
 
-:: Check if chezmoi is already initialized
-if exist "%USERPROFILE%\.local\share\chezmoi\.git" (
-  echo "🚸  chezmoi already initialized"
-  echo "    Reinitialize with: 'chezmoi init https://github.com/pkaramishev/dotfiles.git'"
-) else (
-  echo "🚀  Initializing chezmoi"
-  chezmoi init https://github.com/pkaramishev/dotfiles.git
-)
+:: Initialize chezmoi from scratch
+echo "🚀  Initializing chezmoi"
+chezmoi init --apply --purge https://github.com/pkaramishev/dotfiles.git
 
 echo.
 echo "✅  Done."

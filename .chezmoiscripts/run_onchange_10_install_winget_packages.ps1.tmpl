@@ -1,5 +1,4 @@
-{{- if eq .chezmoi.os "windows" -}}
-
+﻿{{- if eq .chezmoi.os "windows" -}}
 # The next line will trigger the script on every Windows update
 # Windows version: {{ .chezmoi.windowsVersion.currentVersion }}
 
@@ -74,7 +73,7 @@ winget source update
 
 # Install or upgrade all packages
 foreach ($package in $packages) {
-    if (string::IsNullOrWhiteSpace($package)) { continue }
+    if ([string]::IsNullOrWhiteSpace($package)) { continue }
     
     # Check if package is already installed
     $null = winget list --id $package --exact

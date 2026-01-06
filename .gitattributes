@@ -3,3 +3,5 @@
 
 # Don't run conversion on bat files - they have to be CLRF as locally
 *.bat -text
+*.ps1 -text
+*.ps1.tmpl -text

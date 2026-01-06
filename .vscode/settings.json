@@ -2,6 +2,7 @@
     "files.associations": {
         "*.yaml.tmpl": "yaml",
         "*.sh.tmpl": "shellscript",
+        "*.ps1.tmpl": "powershell",
         "dot_*rc": "shellscript",
         "dot_gitconfig.tmpl": "ini"
     }

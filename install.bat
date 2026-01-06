@@ -54,8 +54,14 @@ if exist "%USERPROFILE%\.local\share\chezmoi\.git" (
   set "CMD_TO_RUN=chezmoi init --apply https://github.com/pkaramishev/dotfiles.git; exec bash"
 )
 
+:: Enable running powershell scripts for chezmoi
+powershell -Command "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force"
 powershell -Command "Start-Process '%BASH_PATH%' -ArgumentList '--login', '-i', '-c', '\"%CMD_TO_RUN%\"' -Verb RunAs"
 
 echo ✅  Done. Initialization will proceed in a different window
+
+echo ⏯️  Next steps:
+echo 1️⃣  Pin installed applications to task bar
+echo 2️⃣  Reboot the computer to apply the changes
 
 endlocal

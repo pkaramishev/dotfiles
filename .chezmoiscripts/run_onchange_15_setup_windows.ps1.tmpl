@@ -1,6 +1,6 @@
 ﻿{{- if eq .chezmoi.os "windows" -}}
 
-# Self-elevate the script
+### ================= Self-elevate the script to run from Administrator =================
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
   if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
     $CommandLine = "-NoExit -File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
@@ -8,6 +8,8 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     Exit
   }
 }
+
+### ================= Setup languages =================
 
 $primaryLanguage = "en-US"
 $secondaryLanguages = @("ru-RU")
@@ -48,4 +50,23 @@ Set-WinSystemLocale -SystemLocale $primaryLanguage
 Set-Culture -CultureInfo $regionalFormat
 
 Write-Host "⚙️  Set $primaryLanguage as the primary UI and System Locale"
+
+### ================= Setup taskbar & explorer =================
+
+# Define the registry path for taskbar settings
+$ExplorerSettingsPath = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3"
+$ExplorerSettings = (Get-ItemProperty -Path $ExplorerSettingsPath).Settings
+
+# The 9th byte (index 8) controls the auto-hide state
+# Set to 03 to enable auto-hide; 02 to disable it
+$ExplorerSettings[8] = 0x03
+
+# Save the updated binary settings back to the registry
+Set-ItemProperty -Path $ExplorerSettingsPath -Name "Settings" -Value $ExplorerSettings
+
+# Restart Windows Explorer to apply changes immediately
+Stop-Process -Name explorer -Force
+
+Write-Host "⚙️  Configured explorer & task bar"
+
 {{ end }}

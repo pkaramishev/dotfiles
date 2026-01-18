@@ -88,6 +88,51 @@ foreach ($package in $packages) {
 }
 
 Write-Host "✅  Done. All applications have been installed/updated."
+
+Write-Host "😎  Uninstalling Microsoft Slope"
+
+$undesiredPackageNames = @(
+    "News"
+    "MSN Weather"
+    "Microsoft To Do"
+    "Power Automate"
+    "Outlook for Windows"
+    "OneDrive"
+    "Microsoft 365 Copilot"
+    "Solitaire & Casual Games"
+    "Phone Link"
+    "Get Help"
+    "Feedback Hub"
+    "Microsoft Bing"
+    "Microsoft Teams"
+    "Microsoft Sticky Notes"
+    "Xbox TCUI"
+    "Game Speech Window"
+    "Game Bar"
+    "Xbox Identity Provider"
+    "Windows Calculator"
+    "Xbox"
+    "Microsoft Clipchamp"
+    "Windows Sound Recorder"
+    "Windows Media Player"
+)
+
+# Uninstall packages if they exist
+foreach ($packageName in $undesiredPackageNames) {
+    if ([string]::IsNullOrWhiteSpace($packageName)) { continue }
+    
+    # Check if package is already installed
+    $null = winget list --name $packageName
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "🗑️  Uninstalling $packageName"
+        winget uninstall --name $packageName --silent --accept-source-agreements --force
+    } else {
+        Write-Host "👌  Luckly $packageName doesn't exist in the system"
+    }
+}
+
+Write-Host "✅  Done. All undesired packages have been removed from the system."
+
 Write-Host "⚠️  Unfortunately, you have to manually rerun chezmoi apply in a new terminal to capture PATH updates"
 
 {{ end }}

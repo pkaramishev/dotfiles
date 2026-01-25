@@ -25,7 +25,13 @@ extensions=(
     redhat.vscode-yaml
 )
 
+{{ if (eq .chezmoi.os "darwin") }}
 osascript -e 'tell application "Visual Studio Code" to quit'
+{{ end }}
+
+{{ if eq .chezmoi.os "windows" }}
+taskkill //f //im Code.exe //T >NUL 2>&1
+{{ end }}
 
 echo "🛠️  Configuring VSCode preferences & plugins"
 

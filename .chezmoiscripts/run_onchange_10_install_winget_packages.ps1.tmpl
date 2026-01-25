@@ -135,4 +135,13 @@ Write-Host "✅  Done. All undesired packages have been removed from the system.
 
 Write-Host "⚠️  Unfortunately, you have to manually rerun chezmoi apply in a new terminal to capture PATH updates"
 
+# Append to PATH what winget doesn't append
+$addPath = 'C:\Program Files\Git\bin'
+$systemPath = [Environment]::GetEnvironmentVariable("Path", "Machine")
+if ($systemPath -notcontains $addPath) {
+    [Environment]::SetEnvironmentVariable("Path", $systemPath + ";" + $addPath, "Machine")
+}
+
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
 {{ end }}

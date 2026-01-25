@@ -69,4 +69,14 @@ Stop-Process -Name explorer -Force
 
 Write-Host "⚙️  Configured explorer & task bar"
 
+### ================= Setup gaming features =================
+
+# Disable App Capture
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR" -Name "AppCaptureEnabled" -Value 0 -Type DWord
+
+# Disable Game DVR
+Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_Enabled" -Value 0 -Type DWord
+
+Write-Host "⚙️  Configured gaming features"
+
 {{ end }}

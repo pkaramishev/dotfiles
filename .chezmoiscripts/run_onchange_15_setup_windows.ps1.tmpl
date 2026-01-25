@@ -64,19 +64,27 @@ $ExplorerSettings[8] = 0x03
 # Save the updated binary settings back to the registry
 Set-ItemProperty -Path $ExplorerSettingsPath -Name "Settings" -Value $ExplorerSettings
 
+# Update registry with various settings
+$RegistrySettings = @(
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"; Name = "BingSearchEnabled"; Value = 0; Type = "DWord" },
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search"; Name = "CortanaConsent"; Value = 0; Type = "DWord" },
+    @{ Path = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search"; Name = "EnableDynamicContentInWSB"; Value = 0; Type = "DWord" },
+    @{ Path = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"; Name = "DisableSearchBoxSuggestions"; Value = 1; Type = "DWord" },
+    @{ Path = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"; Name = "AppCaptureEnabled"; Value = 0; Type = "DWord" },
+    @{ Path = "HKCU:\System\GameConfigStore"; Name = "GameDVR_Enabled"; Value = 0; Type = "DWord" }
+)
+
+foreach ($Setting in $RegistrySettings) {
+    if (!(Test-Path $Setting.Path)) {
+        New-Item -Path $Setting.Path -Force | Out-Null
+    }
+
+    New-ItemProperty -Path $Setting.Path -Name $Setting.Name -Value $Setting.Value -PropertyType $Setting.Type -Force | Out-Null
+}
+
 # Restart Windows Explorer to apply changes immediately
 Stop-Process -Name explorer -Force
 
-Write-Host "⚙️  Configured explorer & task bar"
-
-### ================= Setup gaming features =================
-
-# Disable App Capture
-Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR" -Name "AppCaptureEnabled" -Value 0 -Type DWord
-
-# Disable Game DVR
-Set-ItemProperty -Path "HKCU:\System\GameConfigStore" -Name "GameDVR_Enabled" -Value 0 -Type DWord
-
-Write-Host "⚙️  Configured gaming features"
+Write-Host "✅  All configuration has been applied. A restart might be required."
 
 {{ end }}

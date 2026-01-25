@@ -20,6 +20,7 @@ $packages = @(
     # Custom Windows tools
     "Logitech.OptionsPlus"
     "Microsoft.PowerShell"
+    "Microsoft.PowerToys"
 
     {{ if (not (has "work" .use_cases)) -}}
     "Google.Chrome"
@@ -115,6 +116,7 @@ $undesiredPackageNames = @(
     "Microsoft Clipchamp"
     "Windows Sound Recorder"
     "Windows Media Player"
+    "Windows Web Experience Pack"
 )
 
 # Uninstall packages if they exist

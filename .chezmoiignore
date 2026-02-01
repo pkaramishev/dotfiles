@@ -3,7 +3,7 @@ install.sh
 install.bat
 
 {{ if eq .chezmoi.os "darwin" }}
-tdb.json
+.autohotkey
 {{ end }}
 
 {{ if eq .chezmoi.os "windows" }}

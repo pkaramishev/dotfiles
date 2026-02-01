@@ -20,7 +20,6 @@ $packages = @(
     # Custom Windows tools
     "Logitech.OptionsPlus"
     "Microsoft.PowerShell"
-    "Microsoft.PowerToys"
 
     {{ if (not (has "work" .use_cases)) -}}
     "Google.Chrome"
@@ -65,6 +64,12 @@ $packages = @(
     {{ if (has "play_games" .use_cases) -}}
     "Valve.Steam"
     "Modrinth.ModrinthApp"
+    # Microsoft Gaming Services - required to play certain games online
+    "9MWPM2CQNLHN"
+    # Xbox - required to play certain games online
+    "9MV0B5HZVK9Z"
+    # Xbox Identity Provider - required to play certain games online
+    "9WZDNCRD1HKW"
     {{ end }}
 )
 
@@ -110,9 +115,7 @@ $undesiredPackageNames = @(
     "Xbox TCUI"
     "Game Speech Window"
     "Game Bar"
-    "Xbox Identity Provider"
     "Windows Calculator"
-    "Xbox"
     "Microsoft Clipchamp"
     "Windows Sound Recorder"
     "Windows Media Player"

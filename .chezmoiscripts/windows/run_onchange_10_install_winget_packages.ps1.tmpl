@@ -1,5 +1,4 @@
-﻿{{- if eq .chezmoi.os "windows" -}}
-# The next line will trigger the script on every Windows update
+﻿# The next line will trigger the script on every Windows update
 # Windows version: {{ .chezmoi.windowsVersion.currentVersion }}
 
 Write-Host "💰  Setting up WinGet packages"
@@ -139,5 +138,3 @@ foreach ($packageName in $undesiredPackageNames) {
 Write-Host "✅  Done. All undesired packages have been removed from the system."
 
 Write-Host "⚠️  Unfortunately, you have to manually rerun chezmoi apply in a new terminal to capture PATH updates"
-
-{{ end }}

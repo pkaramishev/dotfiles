@@ -1,4 +1,3 @@
-{{- if (eq .chezmoi.os "darwin") -}}
 #!/bin/bash
 
 # The next line will trigger the script on every MacOS update
@@ -130,4 +129,3 @@ done
 brew cleanup --quiet
 
 echo "✅  Done. All applications has been installed."
-{{ end }}

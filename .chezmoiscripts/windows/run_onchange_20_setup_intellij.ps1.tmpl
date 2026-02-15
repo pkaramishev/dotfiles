@@ -1,6 +1,4 @@
-﻿{{- if eq .chezmoi.os "windows" -}}
-
-# Define Variables
+﻿# Define Variables
 $url = "https://download.openide.ru/252.27397.103.1/openIDE-252.27397.103.1.win.zip"
 $zipPath = "$env:TEMP\intellij_dist.zip"
 $destFolder = "$env:LocalAppData\OpenIDE"
@@ -43,11 +41,9 @@ $shortcut.Save()
 
 # Install Plugins
 $plugins = '{{ .apps.idea.plugins | toJson }}' | ConvertFrom-Json
-Write-Host "Installing plugins: $plugins..."
+Write-Host "🔌  Installing plugins: $plugins..."
 
 $argList = @("installPlugins") + $plugins
 Start-Process -FilePath $exePath.FullName -ArgumentList $argList -Wait -NoNewWindow
 
 Write-Host "✅  OpenIDE has been successfully installed"
-
-{{ end }}

@@ -1,4 +1,3 @@
-{{- if (eq .chezmoi.os "darwin") -}}
 #!/bin/bash
 
 # Put .sdkman to home directory so that initialization script could work without calling brew
@@ -34,4 +33,3 @@ echo "Y" | sdk install gradle
 echo "Y" | sdk install maven
 
 echo "✅  Done. sdkman and all the necessary SDKs are configured"
-{{ end }}

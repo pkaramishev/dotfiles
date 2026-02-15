@@ -1,6 +1,4 @@
-﻿{{- if eq .chezmoi.os "windows" -}}
-
-### ================= Self-elevate the script to run from Administrator =================
+﻿### ================= Self-elevate the script to run from Administrator =================
 $homeDirectory = "$env:USERPROFILE"
 
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
@@ -89,5 +87,3 @@ foreach ($Setting in $RegistrySettings) {
 Stop-Process -Name explorer -Force
 
 Write-Host "✅  All configuration has been applied. A restart might be required."
-
-{{ end }}

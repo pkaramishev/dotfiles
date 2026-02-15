@@ -4,9 +4,11 @@ install.bat
 
 {{ if eq .chezmoi.os "darwin" }}
 .autohotkey
+.chezmoiscripts/windows/**
 {{ end }}
 
 {{ if eq .chezmoi.os "windows" }}
+.chezmoiscripts/darwin/**
 .iterm
 .sdkman
 {{ end }}

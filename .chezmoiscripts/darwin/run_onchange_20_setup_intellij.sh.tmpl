@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Define Variables
+URL="https://download.openide.ru/252.27397.103.1/openIDE-252.27397.103.1-aarch64.dmg"
+DMG_PATH="/tmp/openide_dist.dmg"
+DEST_APP="/Applications/OpenIDE.app"
+
+# Close any running instances to prevent file locks
+echo "🗑️  Closing running OpenIDE instances..."
+# Sending SIGTERM to the process name. '|| true' ensures the script continues if not running.
+pkill -f "OpenIDE" || true
+
+# Uninstall/Remove existing version if it exists
+if [ -d "$DEST_APP" ]; then
+    echo "🗑️  Removing existing version at $DEST_APP..."
+    rm -rf "$DEST_APP"
+fi
+
+# Download the DMG distribution
+echo "⬇️  Downloading OpenIDE DMG..."
+curl -L "$URL" -o "$DMG_PATH"
+
+# Install via DMG
+MOUNT_POINT="/Volumes/OpenIDE_Install"
+echo "📁  Mounting and installing to /Applications..."
+hdiutil attach "$DMG_PATH" -mountpoint "$MOUNT_POINT" -nobrowse -quiet
+
+# Find the .app inside the DMG and copy it
+SOURCE_APP=$(find "$MOUNT_POINT" -name "*.app" -maxdepth 1)
+if [ -n "$SOURCE_APP" ]; then
+    cp -R "$SOURCE_APP" "/Applications/"
+else
+    echo "⚠️  Could not find .app file in the DMG."
+fi
+
+# Unmount and Cleanup
+hdiutil detach "$MOUNT_POINT" -quiet
+rm "$DMG_PATH"
+
+# Install Plugins
+PLUGINS=({{- .apps.idea.plugins | join " " }})
+
+echo "🔌 Installing plugins: ${PLUGINS[*]}..."
+open -na "$DEST_APP" --args installPlugins "${PLUGINS[@]}"
+
+echo "✅  OpenIDE has been successfully installed"

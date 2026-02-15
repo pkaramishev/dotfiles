@@ -3,28 +3,6 @@
 # The next line will trigger the script on every VSCode update
 # VSCode version: {{ output "code" "-v" | replaceAllRegex "\n" " " }}
 
-extensions=(
-    asciidoctor.asciidoctor-vscode
-    ms-azuretools.vscode-docker
-    GraphQL.vscode-graphql
-    GraphQL.vscode-graphql-syntax
-    ms-vscode.powershell
-    ms-python.debugpy
-    ms-python.python
-    ms-python.vscode-pylance
-    ms-toolsai.jupyter
-    ms-toolsai.jupyter-keymap
-    ms-toolsai.jupyter-renderers
-    ms-toolsai.vscode-jupyter-cell-tags
-    ms-toolsai.vscode-jupyter-slideshow
-    ms-vscode.makefile-tools
-    42crunch.vscode-openapi
-    continue.continue
-    k--kato.intellij-idea-keybindings
-    likec4.likec4-vscode
-    redhat.vscode-yaml
-)
-
 {{ if (eq .chezmoi.os "darwin") }}
 osascript -e 'tell application "Visual Studio Code" to quit'
 {{ end }}
@@ -36,6 +14,8 @@ taskkill //f //im Code.exe //T >NUL 2>&1
 echo "🛠️  Configuring VSCode preferences & plugins"
 
 # Install or upgrade all extensions
+extensions=({{ range .apps.vscode.plugins }}{{ . | quote }} {{ end }})
+
 for extension in "${extensions[@]}"; do
     code --install-extension "$extension" --force
 done

@@ -20,6 +20,19 @@ data:
 
   use_cases: {{ $use_cases | toToml }}
 
+  apps:
+    idea:
+      plugins:
+        - com.haulmont.amplicode
+        - Lombook Plugin
+        - com.haulmont.intellij.rupack
+        - com.github.continuedev.continueintellijextension
+        - org.asciidoctor.intellij.asciidoc
+        - mobi.hsz.idea.gitignore
+        - ru.adelf.idea.dotenv
+        - net.seesharpsoft.intellij.plugins.csv
+        - MavenRunHelper
+
 interpreters:
   sh:
     command: bash

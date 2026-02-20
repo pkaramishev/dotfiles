@@ -10,5 +10,4 @@ install.bat
 {{ if eq .chezmoi.os "windows" }}
 .chezmoiscripts/darwin/**
 .iterm
-.sdkman
 {{ end }}

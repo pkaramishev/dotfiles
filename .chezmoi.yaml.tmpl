@@ -1,5 +1,5 @@
-{{- $full_name := promptStringOnce . "full_name" "👤  What's your full name" -}}
-{{- $email := promptStringOnce . "email" "📧  What's your primary email for this machine" -}}
+{{- $full_name := promptStringOnce . "user.full_name" "👤  What's your full name" -}}
+{{- $email := promptStringOnce . "user.email" "📧  What's your primary email for this machine" -}}
 
 {{- $use_case_choices := list "write_code" "chat_in_private" "work" "use_llm" "host_llm" "play_games" "listen_music" -}}
 {{- $use_cases := promptMultichoiceOnce
@@ -53,6 +53,21 @@ data:
         - k--kato.intellij-idea-keybindings
         - likec4.likec4-vscode
         - redhat.vscode-yaml
+    vfox:
+      plugins:
+        - "java" 
+        - "maven" 
+        - "gradle"
+      tools:
+        - "java@21.0.10+7-tem"
+        - "java@25.0.2+10-tem"
+        - "maven@3.9.12"
+        - "gradle@8.11.1"
+        - "gradle@9.3.1"
+      defaults:
+        - "java@25.0.2+10-tem"
+        - "maven@3.9.12"
+        - "gradle@9.3.1"
 
 interpreters:
   sh:

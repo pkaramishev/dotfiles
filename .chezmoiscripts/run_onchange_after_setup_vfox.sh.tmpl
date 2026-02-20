@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "🛠️  Configuring vfox plugins..."
+plugins=({{ range .apps.vfox.plugins }}{{ . | quote }} {{ end }})
+
+for plugin in "${plugins[@]}"; do
+    vfox add "$plugin"
+done
+
+echo "🛠️  Installing tools..."
+tools=({{ range .apps.vfox.tools }}{{ . | quote }} {{ end }})
+
+for tool in "${tools[@]}"; do
+    vfox install "$tool"
+done
+
+echo "🛠️  Setting default tools..."
+defaults=({{ range .apps.vfox.defaults }}{{ . | quote }} {{ end }})
+
+for default in "${defaults[@]}"; do
+    vfox use -g "$default"
+done
+
+echo "✅  Done. vfox and all the necessary SDKs are configured"

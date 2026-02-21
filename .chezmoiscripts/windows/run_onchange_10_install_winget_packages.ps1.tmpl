@@ -42,13 +42,6 @@ $packages = @(
     "dbeaver.dbeaver"
     {{ end }}
 
-    # LLM
-    {{ if (has "use_llm" .use_cases) -}}
-    # "block-goose-cli"
-    # "block-goose"
-    # "pygments"
-    {{ end }}
-
     # Private chats
     {{ if (has "chat_in_private" .use_cases) -}}
     "Telegram.TelegramDesktop"

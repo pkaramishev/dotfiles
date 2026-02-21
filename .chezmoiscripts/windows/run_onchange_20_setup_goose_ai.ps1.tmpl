@@ -1,0 +1,47 @@
+{{ if (has "use_llm" .use_cases) -}}
+### Self-elevate the script to run from Administrator
+if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+  if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+    $CommandLine = "-NoExit -File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    Start-Process -Wait -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
+    Exit
+  }
+}
+
+# Define directories and installation source
+$installDir = "$env:LocalAppData\goose-cli"
+$binPath = "$installDir\bin"
+$downloadUrl = "https://raw.githubusercontent.com/block/goose/main/download_cli.ps1"
+$tempScript = "$env:TEMP\download_cli.ps1"
+
+# Download the official installer
+Write-Host "⬇️  Downloading installer from $downloadUrl..."
+Invoke-WebRequest -Uri $downloadUrl -OutFile $tempScript
+
+# Execute the installer
+try {
+    $env:GOOSE_BIN_DIR = "$binPath"
+    $env:CONFIGURE = "false" # disables running goose configure interactively
+
+    & $tempScript
+    
+    Write-Host "✅  Goose has been successfully installed"
+} catch {
+    Write-Error "⚠️  Failed to install Goose: $_"
+} finally {
+    # Cleanup temp script
+    Remove-Item $tempScript -ErrorAction SilentlyContinue
+}
+
+# Setup PATH with goose
+if ($env:Path -notlike "*$binPath*") {
+    $currentPath = [Environment]::GetEnvironmentVariable("Path", "User")
+    if ($currentPath -notlike "*$binPath*") {
+        [Environment]::SetEnvironmentVariable("Path", "$currentPath;$binPath", "User")
+        $env:Path += ";$binPath"
+        Write-Host "✅  Added $binPath to User PATH"
+    }
+}
+
+Write-Host "⏯️  Run `goose configure` to setup LLM provider keys"
+{{ end }}

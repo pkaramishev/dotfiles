@@ -1,3 +1,4 @@
+{{ if (has "write_code" .use_cases) -}}
 #!/bin/bash
 
 echo "🛠️  Configuring vfox plugins..."
@@ -22,3 +23,4 @@ for default in "${defaults[@]}"; do
 done
 
 echo "✅  Done. vfox and all the necessary SDKs are configured"
+{{ end }}

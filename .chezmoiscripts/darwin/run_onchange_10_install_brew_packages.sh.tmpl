@@ -60,7 +60,6 @@ casks=(
 
     # Coding tools
     {{ if (has "write_code" .use_cases) -}}
-    # intellij-idea-ce -- Disabled for not because of you know what. Install OpenIDE manually instead.
     visual-studio-code
     podman-desktop
     dbeaver-community
@@ -94,7 +93,6 @@ casks=(
     postman
     freelens
     {{ end }}
-    
 )
 
 brew update --quiet

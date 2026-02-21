@@ -1,4 +1,5 @@
-﻿# Define Variables
+﻿{{ if (has "write_code" .use_cases) -}}
+# Define Variables
 $url = "https://download.openide.ru/252.27397.103.1/openIDE-252.27397.103.1.win.zip"
 $zipPath = "$env:TEMP\intellij_dist.zip"
 $destFolder = "$env:LocalAppData\OpenIDE"
@@ -47,3 +48,4 @@ $argList = @("installPlugins") + $plugins
 Start-Process -FilePath $exePath.FullName -ArgumentList $argList -Wait -NoNewWindow
 
 Write-Host "✅  OpenIDE has been successfully installed"
+{{ end }}

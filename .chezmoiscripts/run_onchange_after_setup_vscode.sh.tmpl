@@ -1,3 +1,4 @@
+{{ if (has "write_code" .use_cases) -}}
 #!/bin/bash
 
 # The next line will trigger the script on every VSCode update
@@ -21,3 +22,4 @@ for extension in "${extensions[@]}"; do
 done
 
 echo "✅  Done. VSCode is ready to be used"
+{{ end }}

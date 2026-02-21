@@ -1,3 +1,4 @@
+{{ if (has "write_code" .use_cases) -}}
 #!/bin/bash
 
 # Define Variables
@@ -44,3 +45,4 @@ echo "🔌 Installing plugins: ${PLUGINS[*]}..."
 open -na "$DEST_APP" --args installPlugins "${PLUGINS[@]}"
 
 echo "✅  OpenIDE has been successfully installed"
+{{ end }}

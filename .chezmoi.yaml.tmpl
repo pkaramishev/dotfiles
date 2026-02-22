@@ -21,6 +21,161 @@ data:
   use_cases: {{ $use_cases | toToml }}
 
   apps:
+    brew:
+      formulae:
+        # Essentials
+        - chezmoi
+        - git
+        - nano
+        - wget
+        - curl
+        - python3
+        - openssl
+        - eza
+        - zplug
+        - bat
+        # Custom MacOS tools
+        - dockutil
+        # Coding tools
+        {{ if (has "write_code" .use_cases) -}}
+        - git-delta
+        - git-cliff
+        - gitversion
+        - telnet
+        - podman
+        - podman-compose
+        - vfox
+        {{ end }}
+        # LLM
+        {{ if (has "use_llm" .use_cases) -}}
+        - block-goose-cli
+        - pygments
+        {{ end }}
+        # Job-specific customizations
+        {{ if (has "work" .use_cases) -}}
+        - glab
+        {{ end }}
+      casks:
+        # Essentials
+        {{ if (not (has "work" .use_cases)) -}}
+        - google-chrome
+        {{ end }}
+        - sublime-text
+        - vlc
+        - font-hack-nerd-font
+        # Custom MacOS tools
+        - stats
+        - itsycal
+        - iterm2
+        - bettermouse
+        # Coding tools
+        {{ if (has "write_code" .use_cases) -}}
+        - visual-studio-code
+        - podman-desktop
+        - dbeaver-community
+        {{ end }}
+        # LLM
+        {{ if (has "use_llm" .use_cases) -}}
+        - block-goose
+        {{ end }}
+        # Private chats
+        {{ if (has "chat_in_private" .use_cases) -}}
+        - telegram
+        {{ end }}
+        # Music
+        {{ if (has "listen_music" .use_cases) -}}
+        - yandex-music
+        {{ end }}
+        # Gaming
+        {{ if (has "play_games" .use_cases) -}}
+        - steam
+        - modrinth
+        {{ end }}
+        # Job-specific customizations
+        {{ if (has "work" .use_cases) -}}
+        - memoryanalyzer
+        - redis-insight
+        - postman
+        - freelens
+        {{ end }}
+    winget:
+      packages:
+        # Essentials
+        - "twpayne.chezmoi"
+        - "Git.Git"
+        - "GNU.Nano"
+        - "GNU.Wget2"
+        - "cURL.cURL"
+        - "Python.Python.3.13"
+        - "ShiningLight.OpenSSL.Dev"
+        - "eza-community.eza"
+        # "zplug"
+        # "bat"
+        # Custom Windows tools
+        - "Logitech.OptionsPlus"
+        - "Microsoft.PowerShell"
+        - "AutoHotkey.AutoHotkey"
+        {{ if (not (has "work" .use_cases)) -}}
+        - "Google.Chrome"
+        {{ end }}
+        - "SublimeHQ.SublimeText.4"
+        - "VideoLAN.VLC"
+        - "SourceFoundry.HackFonts"
+        # "iterm2"
+        # Coding tools
+        {{ if (has "write_code" .use_cases) -}}
+        - "dandavison.delta"
+        - "orhun.git-cliff"
+        - "GitTools.GitVersion"
+        - "PuTTY.PuTTY" # as alternative to telnet
+        - "RedHat.Podman"
+        - "version-fox.vfox"
+        - "Microsoft.VisualStudioCode"
+        - "RedHat.Podman-Desktop"
+        - "dbeaver.dbeaver"
+        {{ end }}
+        # Private chats
+        {{ if (has "chat_in_private" .use_cases) -}}
+        - "Telegram.TelegramDesktop"
+        {{ end }}
+        # Music
+        {{ if (has "listen_music" .use_cases) -}}
+        - "Yandex.Music"
+        {{ end }}
+        # Gaming
+        {{ if (has "play_games" .use_cases) -}}
+        - "Valve.Steam"
+        - "Modrinth.ModrinthApp"
+        # Microsoft Gaming Services - required to play certain games online
+        - "9MWPM2CQNLHN"
+        # Xbox - required to play certain games online
+        - "9MV0B5HZVK9Z"
+        # Xbox Identity Provider - required to play certain games online
+        - "9WZDNCRD1HKW"
+        {{ end }}
+      slope:
+        - "News"
+        - "MSN Weather"
+        - "Microsoft To Do"
+        - "Power Automate"
+        - "Outlook for Windows"
+        - "OneDrive"
+        - "Microsoft 365 Copilot"
+        - "Solitaire & Casual Games"
+        - "Phone Link"
+        - "Get Help"
+        - "Feedback Hub"
+        - "Microsoft Bing"
+        - "Microsoft Teams"
+        - "Microsoft Sticky Notes"
+        - "Xbox TCUI"
+        - "Game Speech Window"
+        - "Game Bar"
+        - "Windows Calculator"
+        - "Microsoft Clipchamp"
+        - "Windows Sound Recorder"
+        - "Windows Media Player"
+        - "Windows Web Experience Pack"
     idea:
       plugins:
         - com.haulmont.amplicode

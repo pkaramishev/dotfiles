@@ -19,7 +19,7 @@ echo "🛠️  Setting default tools..."
 defaults=({{ range .apps.vfox.defaults }}{{ . | quote }} {{ end }})
 
 for default in "${defaults[@]}"; do
-    vfox use -g "$default"
+    vfox use -g "$default" &
 done
 
 echo "✅  Done. vfox and all the necessary SDKs are configured"

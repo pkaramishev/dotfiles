@@ -3,67 +3,7 @@
 
 Write-Host "💰  Setting up WinGet packages"
 
-$packages = @(
-    # Essentials
-    "twpayne.chezmoi"
-    "Git.Git"
-    "GNU.Nano"
-    "GNU.Wget2"
-    "cURL.cURL"
-    "Python.Python.3.13"
-    "ShiningLight.OpenSSL.Dev"
-    "eza-community.eza"
-    # "zplug"
-    # "bat"
-
-    # Custom Windows tools
-    "Logitech.OptionsPlus"
-    "Microsoft.PowerShell"
-    "AutoHotkey.AutoHotkey"
-
-    {{ if (not (has "work" .use_cases)) -}}
-    "Google.Chrome"
-    {{ end }}
-    "SublimeHQ.SublimeText.4"
-    "VideoLAN.VLC"
-    "SourceFoundry.HackFonts"
-    # "iterm2"
-
-    # Coding tools
-    {{ if (has "write_code" .use_cases) -}}
-    "dandavison.delta"
-    "orhun.git-cliff"
-    "GitTools.GitVersion"
-    "PuTTY.PuTTY" # as alternative to telnet
-    "RedHat.Podman"
-    "version-fox.vfox"
-    "Microsoft.VisualStudioCode"
-    "RedHat.Podman-Desktop"
-    "dbeaver.dbeaver"
-    {{ end }}
-
-    # Private chats
-    {{ if (has "chat_in_private" .use_cases) -}}
-    "Telegram.TelegramDesktop"
-    {{ end }}
-
-    # Music
-    {{ if (has "listen_music" .use_cases) -}}
-    "Yandex.Music"
-    {{ end }}
-
-    # Gaming
-    {{ if (has "play_games" .use_cases) -}}
-    "Valve.Steam"
-    "Modrinth.ModrinthApp"
-    # Microsoft Gaming Services - required to play certain games online
-    "9MWPM2CQNLHN"
-    # Xbox - required to play certain games online
-    "9MV0B5HZVK9Z"
-    # Xbox Identity Provider - required to play certain games online
-    "9WZDNCRD1HKW"
-    {{ end }}
-)
+$packages = '{{ .apps.winget.packages | toJson }}' | ConvertFrom-Json
 
 Write-Host "😎  Installing/Updating applications"
 
@@ -89,30 +29,7 @@ Write-Host "✅  Done. All applications have been installed/updated."
 
 Write-Host "😎  Uninstalling Microsoft Slope"
 
-$undesiredPackageNames = @(
-    "News"
-    "MSN Weather"
-    "Microsoft To Do"
-    "Power Automate"
-    "Outlook for Windows"
-    "OneDrive"
-    "Microsoft 365 Copilot"
-    "Solitaire & Casual Games"
-    "Phone Link"
-    "Get Help"
-    "Feedback Hub"
-    "Microsoft Bing"
-    "Microsoft Teams"
-    "Microsoft Sticky Notes"
-    "Xbox TCUI"
-    "Game Speech Window"
-    "Game Bar"
-    "Windows Calculator"
-    "Microsoft Clipchamp"
-    "Windows Sound Recorder"
-    "Windows Media Player"
-    "Windows Web Experience Pack"
-)
+$undesiredPackageNames = '{{ .apps.winget.slope | toJson }}' | ConvertFrom-Json
 
 # Uninstall packages if they exist
 foreach ($packageName in $undesiredPackageNames) {

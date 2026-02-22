@@ -3,122 +3,35 @@
 # The next line will trigger the script on every MacOS update
 # MacOS build version: {{ output "sw_vers" "--buildVersion" }}
 
-echo "💰  Setting up Homebrew packages"
+echo "💰  Setting up Homebrew packages..."
 
-formulae=(
-    # Essentials
-    chezmoi
-    git
-    nano
-    wget
-    curl
-    python3
-    openssl
-    eza
-    zplug
-    bat
-
-    # Custom MacOS tools
-    dockutil
-
-    # Coding tools
-    {{ if (has "write_code" .use_cases) -}}
-    git-delta
-    git-cliff
-    gitversion
-    telnet
-    podman
-    podman-compose
-    vfox
-    {{ end }}
-
-    # LLM
-    {{ if (has "use_llm" .use_cases) -}}
-    block-goose-cli
-    pygments
-    {{ end }}
-
-    # Job-specific customizations
-    {{ if (has "work" .use_cases) -}}
-    glab
-    {{ end }}
-)
-casks=(
-    # Essentials
-    {{ if (not (has "work" .use_cases)) -}}
-    google-chrome
-    {{ end }}
-    sublime-text
-    vlc
-    font-hack-nerd-font
-
-    # Custom MacOS tools
-    stats
-    itsycal
-    iterm2
-    bettermouse
-
-    # Coding tools
-    {{ if (has "write_code" .use_cases) -}}
-    visual-studio-code
-    podman-desktop
-    dbeaver-community
-    {{ end }}
-
-    # LLM
-    {{ if (has "use_llm" .use_cases) -}}
-    block-goose
-    {{ end }}
-
-    # Private chats
-    {{ if (has "chat_in_private" .use_cases) -}}
-    telegram
-    {{ end }}
-
-    # Music
-    {{ if (has "listen_music" .use_cases) -}}
-    yandex-music
-    {{ end }}
-
-    # Gaming
-    {{ if (has "play_games" .use_cases) -}}
-    steam
-    modrinth
-    {{ end }}
-
-    # Job-specific customizations
-    {{ if (has "work" .use_cases) -}}
-    memoryanalyzer
-    redis-insight
-    postman
-    freelens
-    {{ end }}
-)
+formulae=({{ range .apps.brew.formulae }}{{ . | quote }} {{ end }})
+casks=({{ range .apps.brew.casks }}{{ . | quote }} {{ end }})
 
 brew update --quiet
 
-echo "😎  Installing command-line applications"
+echo "😎  Installing command-line applications..."
 
 # Install or upgrade all formulae
 for formula in "${formulae[@]}"; do
     if brew ls --versions "$formula" >/dev/null; then
-        echo "🔄  Updating formula $formula"
+        echo "🔄  Updating formula $formula..."
         HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade --quiet --force --formula "$formula"
     else
-        echo "📥  Installing formula $formula"
+        echo "📥  Installing formula $formula..."
         HOMEBREW_NO_AUTO_UPDATE=1 brew install --quiet --force --formula "$formula"
     fi
 done
 
-echo "👀  Installing GUI applications"
+echo "👀  Installing GUI applications..."
 
 # Install or upgrade all casks
 for cask in "${casks[@]}"; do
     if brew ls --versions --cask "$cask" >/dev/null; then
-        echo "🔄  Updating cask $cask"
+        echo "🔄  Updating cask $cask..."
         HOMEBREW_NO_AUTO_UPDATE=1 brew upgrade --quiet --force --cask "$cask"
     else
-        echo "📥  Installing cask $cask"
+        echo "📥  Installing cask $cask..."
         HOMEBREW_NO_AUTO_UPDATE=1 brew install --quiet --force --cask "$cask"
     fi
 done

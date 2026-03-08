@@ -3,6 +3,8 @@
 
 # The next line will trigger the script on every VSCode update
 # VSCode version: {{ output "code" "-v" | replaceAllRegex "\n" " " }}
+# The next line will trigger the script when content of settings.json.tmpl changes
+# Settings hash: {{ include "dot_config/vscode/settings.json.tmpl" | sha256sum }}
 
 {{ if (eq .chezmoi.os "darwin") }}
 osascript -e 'tell application "Visual Studio Code" to quit'
@@ -12,14 +14,25 @@ osascript -e 'tell application "Visual Studio Code" to quit'
 taskkill //f //im Code.exe //T >NUL 2>&1
 {{ end }}
 
-echo "🛠️  Configuring VSCode preferences & plugins"
-
 # Install or upgrade all extensions
-extensions=({{ range .apps.vscode.plugins }}{{ . | quote }} {{ end }})
+echo "🛠️  Configuring VSCode plugins..."
 
+extensions=({{ range .apps.vscode.plugins }}{{ . | quote }} {{ end }})
 for extension in "${extensions[@]}"; do
     code --install-extension "$extension" --force
 done
+
+# Configure Global VSCode settings
+echo "🛠️  Configuring VSCode settings..."
+
+{{ if (eq .chezmoi.os "darwin") }}
+  SETTINGS_PATH="$HOME/Library/Application Support/Code/User/settings.json"
+{{ end }}
+{{ if eq .chezmoi.os "windows" }}
+  SETTINGS_PATH="$APPDATA/Code/User/settings.json"
+{{ end }}
+
+cp ~/.config/vscode/settings.json "$SETTINGS_PATH"
 
 echo "✅  Done. VSCode is ready to be used"
 {{ end }}

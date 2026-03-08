@@ -5,6 +5,8 @@ install.bat
 {{ if eq .chezmoi.os "darwin" }}
 .autohotkey
 .chezmoiscripts/windows/**
+.minttyrc
+Documents/PowerShell/**
 {{ end }}
 
 {{ if eq .chezmoi.os "windows" }}

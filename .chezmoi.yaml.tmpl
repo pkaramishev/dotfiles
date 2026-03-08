@@ -33,7 +33,9 @@ data:
         - openssl
         - eza
         - zplug
+        - jandedobbeleer/oh-my-posh/oh-my-posh
         - bat
+        - jq
         # Custom MacOS tools
         - dockutil
         # Coding tools
@@ -63,6 +65,7 @@ data:
         - sublime-text
         - vlc
         - font-hack-nerd-font
+        - jandedobbeleer/oh-my-posh/oh-my-posh
         # Custom MacOS tools
         - stats
         - itsycal
@@ -108,7 +111,9 @@ data:
         - "cURL.cURL"
         - "Python.Python.3.13"
         - "ShiningLight.OpenSSL.Dev"
+        - "JanDeDobbeleer.OhMyPosh"
         - "eza-community.eza"
+        - "jqlang.jq"
         # "zplug"
         # "bat"
         # Custom Windows tools
@@ -120,7 +125,6 @@ data:
         {{ end }}
         - "SublimeHQ.SublimeText.4"
         - "VideoLAN.VLC"
-        - "SourceFoundry.HackFonts"
         # "iterm2"
         # Coding tools
         {{ if (has "write_code" .use_cases) -}}
@@ -193,7 +197,6 @@ data:
         - ms-azuretools.vscode-docker
         - GraphQL.vscode-graphql
         - GraphQL.vscode-graphql-syntax
-        - ms-vscode.powershell
         - ms-python.debugpy
         - ms-python.python
         - ms-python.vscode-pylance
@@ -211,8 +214,8 @@ data:
         - EditorConfig.EditorConfig
     vfox:
       plugins:
-        - "java" 
-        - "maven" 
+        - "java"
+        - "maven"
         - "gradle"
       tools:
         - "java@21.0.10+7-tem"
@@ -224,8 +227,16 @@ data:
         - "java@25.0.2+10-tem"
         - "maven@3.9.12"
         - "gradle@9.3.1"
+    terminal:
+      font:
+        family: "Meslo"
+        name: "MesloLGM Nerd Font Mono"
+        size: 14
 
 interpreters:
   sh:
     command: bash
+  ps1:
+    command: "pwsh"
+    args: ["-NoLogo"]
 

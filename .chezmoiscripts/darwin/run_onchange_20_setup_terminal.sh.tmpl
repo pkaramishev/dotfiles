@@ -16,5 +16,7 @@ if [ -d "/Applications/iTerm.app" ]; then
   defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 fi
 
+osascript -e 'tell application "Terminal" to set font of settings set "Basic" to "{{ .apps.terminal.font.name }}"'
+osascript -e 'tell application "Terminal" to set font size of settings set "Basic" to {{ .apps.terminal.font.size }}'
 
 echo "✅  Done. Terminal is fully functional now."

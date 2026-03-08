@@ -3,10 +3,10 @@ install.sh
 install.bat
 
 {{ if eq .chezmoi.os "darwin" }}
-.autohotkey
+.config/autohotkey/**
 .chezmoiscripts/windows/**
 .minttyrc
-Documents/PowerShell/**
+Documents/**
 {{ end }}
 
 {{ if eq .chezmoi.os "windows" }}

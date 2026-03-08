@@ -10,13 +10,13 @@ if [ -d "/Applications/iTerm.app" ]; then
   echo "🛠️  Configuring iterm2 preferences"
 
   # Specify the preferences directory
-  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.iterm"
+  defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.config/iterm2"
 
   # Tell iTerm2 to use the custom preferences in the directory
   defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 fi
 
-osascript -e 'tell application "Terminal" to set font of settings set "Basic" to "{{ .apps.terminal.font.name }}"'
-osascript -e 'tell application "Terminal" to set font size of settings set "Basic" to {{ .apps.terminal.font.size }}'
+osascript -e 'tell application "Terminal" to set font of settings set "Basic" to "{{ .apps.terminal.font.name }}"' &
+osascript -e 'tell application "Terminal" to set font size of settings set "Basic" to {{ .apps.terminal.font.size }}' &
 
 echo "✅  Done. Terminal is fully functional now."

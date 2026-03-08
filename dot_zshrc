@@ -1,16 +1,9 @@
-# Essentials for ZSH
-
-export ZSH="$HOME/.oh-my-zsh"
-
 # Language configuration
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
 # Appearance settings
-
-ZSH_THEME="" # Disabled in favor of pure theme installed by zplug
-zstyle ':omz:update' mode auto  # Update theme automatically without asking
 
 DISABLE_AUTO_TITLE="true" # Disable auto-setting terminal title.
 
@@ -20,29 +13,22 @@ HISTORY_IGNORE='(ls|cd|pwd|exit|date|history)' # Make some commands not show up 
 HIST_STAMPS="dd.mm.yyyy" # Command execution timestamp shown in the history command output (see 'man strftime' for details)
 HISTSIZE=10000 # Limit of the lines to keep track of in history
 SAVEHIST=10000 # Limit of the command size to keep track of in history
-setopt APPEND_HISTORY # adds history
 setopt HIST_IGNORE_ALL_DUPS # If a new command line being added to the history list duplicates an older one, the older command is removed from the list
 setopt HIST_IGNORE_SPACE # No history when starting command with space
 setopt HIST_SAVE_NO_DUPS # When writing out the history file, older commands that duplicate newer ones are omitted
+setopt APPEND_HISTORY # Adds new commands to the history file immediately rather than overwriting it
+setopt SHARE_HISTORY # Imports/exports commands to the history file in real-time so all open tabs share the same history
 
 # Store all history dotfiles in dedicated directory
 
 SHELL_SESSION_DIR="$HOME/.cache/.zsh_sessions"
-SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"                                                    
+SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"
 mkdir -m 700 -p "$SHELL_SESSION_DIR"
 
 export HISTFILE="$HOME/.cache/.zsh_history"
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export PYTHON_HISTORY=~/.cache/.python_history
 export ZSH_COMPDUMP="$HOME/.cache/.zcompdump-$HOST"
-
-# Configure ZSH with the above settings
-
-source $ZSH/oh-my-zsh.sh
-
-# Load plugins
-
-[ -f ~/.zplug.sh ] && source ~/.zplug.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -51,8 +37,31 @@ else
   export EDITOR='code --wait --new-window'
 fi
 
+# Command completion options
+
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # Case-insensitive tab completion
+zstyle ':completion:*' menu select # Use arrow keys to navigate tab completion menu
+
+# Allows switching directories by typing the path alone (e.g., typing 'Documents' instead of 'cd Documents')
+setopt AUTO_CD
+
+# Keybindings
+
+bindkey "${terminfo[khome]}" beginning-of-line
+bindkey "${terminfo[kend]}"  end-of-line
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+
 # Goose environment variables
 export GOOSE_RECIPE_PATH="$HOME/.config/goose/recipes"
+
+# Load shell customizations
+[ -f ~/.zplug.sh ] && source ~/.zplug.sh
+eval "$(vfox activate zsh)"
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/theme.omp.json)"
 
 # Functions to overwrite standard utilities
 
@@ -63,5 +72,3 @@ function cat() {
 function ls() {
     eza -a --icons --no-user --no-time "$@"
 }
-
-eval "$(vfox activate zsh)"

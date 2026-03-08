@@ -72,7 +72,7 @@ $RegistrySettings = @(
     @{ Path = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"; Name = "DisableSearchBoxSuggestions"; Value = 1; Type = "DWord" },
     @{ Path = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"; Name = "AppCaptureEnabled"; Value = 0; Type = "DWord" },
     @{ Path = "HKCU:\System\GameConfigStore"; Name = "GameDVR_Enabled"; Value = 0; Type = "DWord" }
-    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"; Name = "MacOsKeybindings"; Value = "`"$homeDirectory\.autohotkey\macos_keymapping.ahk`""; Type = "String" }
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"; Name = "MacOsKeybindings"; Value = "`"$homeDirectory\.config\autohotkey\macos_keymapping.ahk`""; Type = "String" }
 )
 
 foreach ($Setting in $RegistrySettings) {

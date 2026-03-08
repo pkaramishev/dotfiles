@@ -4,7 +4,7 @@
 # The next line will trigger the script on every VSCode update
 # VSCode version: {{ output "code" "-v" | replaceAllRegex "\n" " " }}
 # The next line will trigger the script when content of settings.json.tmpl changes
-# Settings hash: {{ include "dot_config/vscode/settings.json.tmpl" | sha256sum }}
+# Settings hash: {{ include "dot_vscode/settings.json.tmpl" | sha256sum }}
 
 {{ if (eq .chezmoi.os "darwin") }}
 osascript -e 'tell application "Visual Studio Code" to quit'
@@ -32,7 +32,7 @@ echo "🛠️  Configuring VSCode settings..."
   SETTINGS_PATH="$APPDATA/Code/User/settings.json"
 {{ end }}
 
-cp ~/.config/vscode/settings.json "$SETTINGS_PATH"
+cp ~/.vscode/settings.json "$SETTINGS_PATH"
 
 echo "✅  Done. VSCode is ready to be used"
 {{ end }}

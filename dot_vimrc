@@ -1,0 +1,32 @@
+" --- VIM CONFIGURATION (~/.vimrc) ---
+
+set nocompatible " Use Vim defaults instead of 100% Vi compatibility
+syntax on " Enable language-specific syntax highlighting
+set number " Show absolute line number for the current line
+set relativenumber " Show relative line numbers for easier jumping
+set cursorline " Highlight the line the cursor is currently on
+set mouse=a " Enable mouse support in all modes
+set clipboard=unnamedplus " Link Vim clipboard to system clipboard
+
+" --- SEARCH ---
+set hlsearch " Highlight all search results
+set incsearch " Highlight matches as you type
+set ignorecase " Ignore case in search patterns
+set smartcase " Override ignorecase if search contains capitals
+
+" --- INDENTATION ---
+set expandtab " Convert tabs to spaces
+set tabstop=4 " Number of spaces a tab counts for
+set shiftwidth=4 " Number of spaces for auto-indenting
+set autoindent " Copy indent from current line to the next
+
+" --- FILE MANAGEMENT & DE-POLLUTION ---
+set hidden " Allow buffer switching without saving
+let mapleader = " " " Set the spacebar as the leader key
+set undofile " Save undo history to a file
+
+" Redirect temporary files to a central location
+set viminfo+=n~/.cache/vim/viminfo " Move .viminfo out of home directory
+set backupdir=~/.cache/vim/backup// " Store backup files centrally
+set directory=~/.cache/vim/swap// " Store swap files centrally
+set undodir=~/.cache/vim/undo// " Store undo history centrally

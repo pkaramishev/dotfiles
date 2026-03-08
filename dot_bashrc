@@ -1,1 +1,13 @@
+# Load shell customizations
+echo 'eval "$(vfox activate bash)"' >> ~/.bashrc
 eval "$(oh-my-posh init bash --config "~/.config/oh-my-posh/theme.omp.json")"
+
+# Functions to overwrite standard utilities
+
+function cat() {
+    bat --theme=default "$@"
+}
+
+function ls() {
+    eza -a --icons --no-user --no-time "$@"
+}

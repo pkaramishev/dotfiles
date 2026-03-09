@@ -11,5 +11,5 @@ Documents/**
 
 {{ if eq .chezmoi.os "windows" }}
 .chezmoiscripts/darwin/**
-.iterm
+.config/iterm2/**
 {{ end }}

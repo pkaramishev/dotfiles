@@ -1,9 +1,9 @@
-{{ if (has "use_llm" .use_cases) -}}
+﻿{{ if (has "use_llm" .use_cases) -}}
 ### Self-elevate the script to run from Administrator
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
   if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-    $CommandLine = "-NoExit -File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
-    Start-Process -Wait -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
+    $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    Start-Process -Wait -FilePath pwsh.exe -Verb Runas -ArgumentList $CommandLine
     Exit
   }
 }
@@ -24,7 +24,7 @@ try {
     $env:CONFIGURE = "false" # disables running goose configure interactively
 
     & $tempScript
-    
+
     Write-Host "✅  Goose has been successfully installed"
 } catch {
     Write-Error "⚠️  Failed to install Goose: $_"

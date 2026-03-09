@@ -63,12 +63,11 @@ data:
         - google-chrome
         {{ end }}
         - sublime-text
+        - warp
         - vlc
         - font-meslo-lg-nerd-font
         # Custom MacOS tools
-        - stats
         - itsycal
-        - iterm2
         - bettermouse
         # Coding tools
         {{ if (has "write_code" .use_cases) -}}
@@ -113,18 +112,18 @@ data:
         - "JanDeDobbeleer.OhMyPosh"
         - "eza-community.eza"
         - "jqlang.jq"
-        # "zplug"
-        # "bat"
-        # Custom Windows tools
-        - "Logitech.OptionsPlus"
-        - "Microsoft.PowerShell"
-        - "AutoHotkey.AutoHotkey"
+        - "Warp.Warp"
         {{ if (not (has "work" .use_cases)) -}}
         - "Google.Chrome"
         {{ end }}
         - "SublimeHQ.SublimeText.4"
         - "VideoLAN.VLC"
-        # "iterm2"
+        # Custom Windows tools
+        - "Logitech.OptionsPlus"
+        - "Microsoft.PowerShell"
+        - "AutoHotkey.AutoHotkey"
+        # "zplug"
+        # "bat"
         # Coding tools
         {{ if (has "write_code" .use_cases) -}}
         - "dandavison.delta"

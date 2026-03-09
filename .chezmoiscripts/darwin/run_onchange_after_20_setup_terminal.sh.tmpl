@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# The next line will trigger the script when content of settings.json.tmpl changes
+# Settings hash: {{ include "dot_warp/settings.plist.tmpl" | sha256sum }}
+
+# Configure Warp terminal
+defaults import dev.warp.Warp-Stable "$HOME/.warp/settings.plist"
+
+# Configure Default Apple Terminal
+osascript -e '
+tell application "Terminal"
+    set profileName to "Basic"
+    set font name of settings set profileName to "{{ .apps.terminal.font.name }}"
+    set font size of settings set profileName to {{ .apps.terminal.font.size }}
+    set background color of settings set profileName to {4626, 4626, 4626}
+    if (count windows) > 0 then close every window saving no
+    quit
+end tell' &
+
+
+echo "✅  Done. Terminal is fully functional now."

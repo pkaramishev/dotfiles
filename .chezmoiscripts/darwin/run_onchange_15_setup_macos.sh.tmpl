@@ -303,7 +303,7 @@ dockutil --no-restart --remove all
 dock_apps=(
     # Essentials
     "/System/Applications/System Settings.app"
-    "/Applications/iTerm.app"
+    "/Applications/warp.app"
     "/Applications/Google Chrome.app"
     "/Applications/Sublime Text.app"
 
@@ -549,8 +549,8 @@ processes=(
 )
 
 for process in "${processes[@]}"; do
-    if pgrep "$process" &> /dev/null ; then 
-        sudo killall "$process" > /dev/null 2>&1 ; 
+    if pgrep "$process" &> /dev/null ; then
+        sudo killall "$process" > /dev/null 2>&1 ;
     fi
 done
 

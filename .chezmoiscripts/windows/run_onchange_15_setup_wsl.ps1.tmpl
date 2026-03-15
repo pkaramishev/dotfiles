@@ -1,0 +1,33 @@
+﻿{{ if (has "write_code" .use_cases) -}}
+### ================= Self-elevate the script to run from Administrator =================
+if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+  if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+    $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    Start-Process -Wait -FilePath pwsh.exe -Verb Runas -ArgumentList $CommandLine
+    Exit
+  }
+}
+
+### ================= Install WSL =================
+Write-Host "🚀  Configuring WSL..."
+
+# Enable Windows Features regarding WSL
+$features = @("Microsoft-Windows-Subsystem-Linux", "VirtualMachinePlatform")
+foreach ($feature in $features) {
+    $check = Get-WindowsOptionalFeature -Online -FeatureName $feature
+    if ($check.State -ne "Enabled") {
+        Enable-WindowsOptionalFeature -Online -FeatureName $feature -All -NoRestart
+        Write-Host "⚙️  Enabled Windows Optional Feature: $feature"
+    }
+}
+
+# Install WSL and default Distro (Ubuntu)
+wsl --status > $null 2>&1
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "📦  Installing WSL Kernel and Ubuntu..."
+    wsl --install --no-launch
+    wsl --set-default-version 2
+} else {
+    Write-Host "✅  WSL has already been installed."
+}
+{{ end }}

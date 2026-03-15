@@ -1,0 +1,17 @@
+# Load shell customizations
+eval "$(vfox activate bash)"
+eval "$(oh-my-posh init bash --config "~/.config/oh-my-posh/theme.omp.json")"
+
+# Podman Docker Compatibility
+{{ if (eq .chezmoi.os "darwin") }}
+export DOCKER_HOST="unix://$HOME/.local/share/containers/podman/machine/podman.sock"
+{{ end }}
+
+# Functions to overwrite standard utilities
+function cat() {
+    bat --theme=default "$@"
+}
+
+function ls() {
+    eza -a --icons --no-user --no-time "$@"
+}

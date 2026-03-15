@@ -1,0 +1,35 @@
+{{ if (has "write_code" .use_cases) -}}
+#!/bin/bash
+
+# Initialize & Start Podman Machine
+if ! podman machine inspect podman-machine-default &> /dev/null; then
+    podman machine init --rootful --now
+    echo "🛠️  Initialized podman machine from scratch"
+else
+    [[ $(podman machine inspect podman-machine-default --format ''{{ "{{" }}.State{{ "}}" }}'') != "running" ]] && podman machine start
+    echo "🛠️  Ensured that podman machine is up and running"
+fi
+
+# Enable Docker Compatibility
+if ! command -v docker.exe &> /dev/null; then
+    {{ if (eq .chezmoi.os "darwin") }}
+    sudo podman-mac-helper install
+    sudo ln -sfn "$(which podman)" /usr/local/bin/docker
+    {{ end }}
+
+    {{ if (eq .chezmoi.os "windows") }}
+    PODMAN_BIN=$(where podman.exe | head -n 1)
+    PODMAN_DIR=$(dirname "$PODMAN_BIN")
+    DOCKER_BIN="$PODMAN_DIR\docker.exe"
+
+    # Create a temporary .bat file so that bash won't mess with the contents
+    echo "mklink /H \"$DOCKER_BIN\" \"$PODMAN_BIN\"" > temp.bat
+    gsudo cmd /c temp.bat
+    rm temp.bat
+    {{ end }}
+    
+    echo "🛠️  Set up docker compatibility for podman"
+fi
+
+echo "✅  Podman has been successfully installed and configured"
+{{ end }}

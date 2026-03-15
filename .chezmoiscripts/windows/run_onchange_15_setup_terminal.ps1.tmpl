@@ -1,10 +1,10 @@
 ﻿# Install fonts
-oh-my-posh font install '{{ .apps.terminal.font.family }}'
+gsudo { oh-my-posh font install '{{ .apps.terminal.font.family }}' }
 
 # Configure Powershell (pwsh) to recognize NerdFonts
-Install-PSResource -Name 'NerdFonts' -TrustRepository
-Import-Module -Name 'NerdFonts'
-Install-NerdFont -Name '{{ .apps.terminal.font.family }}'
+Invoke-Gsudo { Install-PSResource -Name 'NerdFonts' -Scope AllUsers -TrustRepository }
+Invoke-Gsudo { Import-Module -Name 'NerdFonts' }
+Invoke-Gsudo { Install-NerdFont -Name '{{ .apps.terminal.font.family }}' -Scope AllUsers }
 
 # Configure Windows Terminal to use the fonts
 $terminal_settings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"

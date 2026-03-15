@@ -63,8 +63,15 @@ export GOOSE_RECIPE_PATH="$HOME/.config/goose/recipes"
 eval "$(vfox activate zsh)"
 eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/theme.omp.json)"
 
-# Functions to overwrite standard utilities
+# Podman Docker Compatibility
+{{ if (eq .chezmoi.os "windows") }}
+export DOCKER_HOST="npipe:////./pipe/docker_engine"
+{{ end }}
+{{ if (eq .chezmoi.os "darwin") }}
+export DOCKER_HOST="unix://$HOME/.local/share/containers/podman/machine/podman.sock"
+{{ end }}
 
+# Functions to overwrite standard utilities
 function cat() {
     bat --theme=default "$@"
 }

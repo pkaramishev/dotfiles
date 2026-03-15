@@ -46,6 +46,7 @@ data:
         - telnet
         - podman
         - podman-compose
+        - docker-compose
         - vfox
         {{ end }}
         # LLM
@@ -122,6 +123,8 @@ data:
         - "Microsoft.PowerShell"
         - "AutoHotkey.AutoHotkey"
         - "eza-community.eza"
+        - "Microsoft.WindowsTerminal"
+        - "gerardog.gsudo"
         # "zplug"
         # "bat"
         # Coding tools
@@ -131,9 +134,10 @@ data:
         - "GitTools.GitVersion"
         - "PuTTY.PuTTY" # as alternative to telnet
         - "RedHat.Podman"
+        - "RedHat.Podman-Desktop"
+        - "Docker.DockerCompose"
         - "version-fox.vfox"
         - "Microsoft.VisualStudioCode"
-        - "RedHat.Podman-Desktop"
         - "dbeaver.dbeaver"
         {{ end }}
         # Private chats
@@ -178,6 +182,8 @@ data:
         - "Windows Sound Recorder"
         - "Windows Media Player"
         - "Windows Web Experience Pack"
+      paths:
+        - "~\\AppData\\Local\\goose-cli\\bin"
     idea:
       plugins:
         - com.haulmont.amplicode

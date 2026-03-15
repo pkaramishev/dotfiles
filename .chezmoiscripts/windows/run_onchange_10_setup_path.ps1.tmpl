@@ -1,0 +1,31 @@
+﻿Write-Host "😎  Updating User's PATH to expose installed applications..."
+
+$paths = '{{ .apps.winget.paths | toJson }}' | ConvertFrom-Json
+
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+$currentPaths = $userPath.Split(';', [System.StringSplitOptions]::RemoveEmptyEntries) | ForEach-Object { $_.Trim() }
+
+
+foreach ($dir in $paths) {
+    # Expand variables (e.g., convert $HOME to C:\Users\You)
+    $expandedDir = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($dir)
+
+    if ($currentPaths -notcontains $expandedDir) {
+        # Update the persistent Registry string
+        Write-Host $expandedDir
+        $userPath = if ([string]::IsNullOrWhiteSpace($userPath)) { $expandedDir } else { "$userPath;$expandedDir" }
+        Invoke-Gsudo { [Environment]::SetEnvironmentVariable("Path", $using:userPath, "User") }
+
+        # Update the current session
+        $env:Path += ";$expandedDir"
+
+        # Update our tracking list
+        $currentPaths += $expandedDir
+
+        Write-Host "✅  Added $expandedDir to PATH"
+    } else {
+        Write-Host "ℹ️  Already in PATH: $expandedDir"
+    }
+}
+
+Write-Host "✅  Done. User's PATH has been set up."

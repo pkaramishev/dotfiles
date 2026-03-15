@@ -1,53 +1,46 @@
-﻿### ================= Self-elevate the script to run from Administrator =================
-$homeDirectory = "$env:USERPROFILE"
-
-if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
-  if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-    $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
-    Start-Process -Wait -FilePath pwsh.exe -Verb Runas -ArgumentList $CommandLine
-    Exit
-  }
-}
-
-### ================= Setup languages =================
+﻿### ================= Setup languages =================
 
 $primaryLanguage = "en-US"
 $secondaryLanguages = @("ru-RU")
 $regionalFormat = "ru-RU"
 
-Write-Host "🚀  Configuring system languages" -ForegroundColor Cyan
+Write-Host "🚀  Configuring system languages"
 
 # 1. Install all languages to the system
 $allLanguages = @($primaryLanguage) + $secondaryLanguages
 foreach ($lang in $allLanguages) {
     try {
-        Install-Language -Language $lang
+        Invoke-Gsudo { Install-Language -Language $using:lang }
         Write-Host "📦  Installed language: $lang"
     } catch {
-        Write-Host "⚠️  Could not install language $lang. Ensure you have an internet connection." -ForegroundColor Yellow
+        Write-Host "⚠️  Could not install language $lang. Ensure you have an internet connection."
     }
 }
 
 # 2. Build and set the User Language List
-$langList = New-WinUserLanguageList -Language $primaryLanguage
+Invoke-Gsudo {
+  $langList = New-WinUserLanguageList -Language $using:primaryLanguage
 
-foreach ($secondary in $secondaryLanguages) {
+  foreach ($secondary in $using:secondaryLanguages) {
     $langList.Add($secondary)
+  }
+
+  Set-WinUserLanguageList -LanguageList $langList -Force
 }
 
-Set-WinUserLanguageList -LanguageList $langList -Force
 Write-Host "⚙️  Made languages available for input switch"
 
 # 3. Set Global System Overrides
+Invoke-Gsudo {
+  # Force Windows Display Language
+  Set-WinUILanguageOverride -Language $using:primaryLanguage
 
-# Force Windows Display Language
-Set-WinUILanguageOverride -Language $primaryLanguage
+  # Set System Locale for non-Unicode programs (Requires Restart)
+  Invoke-Gsudo { Set-WinSystemLocale -SystemLocale $using:primaryLanguage }
 
-# Set System Locale for non-Unicode programs (Requires Restart)
-Set-WinSystemLocale -SystemLocale $primaryLanguage
-
-# 4. Set Regional Format
-Set-Culture -CultureInfo $regionalFormat
+  # 4. Set Regional Format
+  Invoke-Gsudo { Set-Culture -CultureInfo $using:regionalFormat }
+}
 
 Write-Host "⚙️  Set $primaryLanguage as the primary UI and System Locale"
 
@@ -62,7 +55,7 @@ $ExplorerSettings = (Get-ItemProperty -Path $ExplorerSettingsPath).Settings
 $ExplorerSettings[8] = 0x03
 
 # Save the updated binary settings back to the registry
-Set-ItemProperty -Path $ExplorerSettingsPath -Name "Settings" -Value $ExplorerSettings
+Invoke-Gsudo { Set-ItemProperty -Path $using:ExplorerSettingsPath -Name "Settings" -Value $using:ExplorerSettings }
 
 # Update registry with various settings
 $RegistrySettings = @(
@@ -72,18 +65,20 @@ $RegistrySettings = @(
     @{ Path = "HKCU:\Software\Policies\Microsoft\Windows\Explorer"; Name = "DisableSearchBoxSuggestions"; Value = 1; Type = "DWord" },
     @{ Path = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"; Name = "AppCaptureEnabled"; Value = 0; Type = "DWord" },
     @{ Path = "HKCU:\System\GameConfigStore"; Name = "GameDVR_Enabled"; Value = 0; Type = "DWord" }
-    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"; Name = "MacOsKeybindings"; Value = "`"$homeDirectory\.config\autohotkey\macos_keymapping.ahk`""; Type = "String" }
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"; Name = "MacOsKeybindings"; Value = "`"$env:USERPROFILE\.config\autohotkey\macos_keymapping.ahk`""; Type = "String" }
 )
 
-foreach ($Setting in $RegistrySettings) {
+Invoke-Gsudo {
+  foreach ($Setting in $using:RegistrySettings) {
     if (!(Test-Path $Setting.Path)) {
-        New-Item -Path $Setting.Path -Force | Out-Null
+      New-Item -Path $Setting.Path -Force | Out-Null
     }
 
     New-ItemProperty -Path $Setting.Path -Name $Setting.Name -Value $Setting.Value -PropertyType $Setting.Type -Force | Out-Null
+  }
 }
 
 # Restart Windows Explorer to apply changes immediately
-Stop-Process -Name explorer -Force
+Invoke-Gsudo { Stop-Process -Name explorer -Force }
 
 Write-Host "✅  All configuration has been applied. A restart might be required."

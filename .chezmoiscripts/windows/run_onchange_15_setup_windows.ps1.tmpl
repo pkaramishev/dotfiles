@@ -36,10 +36,10 @@ Invoke-Gsudo {
   Set-WinUILanguageOverride -Language $using:primaryLanguage
 
   # Set System Locale for non-Unicode programs (Requires Restart)
-  Invoke-Gsudo { Set-WinSystemLocale -SystemLocale $using:primaryLanguage }
+  Set-WinSystemLocale -SystemLocale $using:primaryLanguage
 
   # 4. Set Regional Format
-  Invoke-Gsudo { Set-Culture -CultureInfo $using:regionalFormat }
+  Set-Culture -CultureInfo $using:regionalFormat
 }
 
 Write-Host "⚙️  Set $primaryLanguage as the primary UI and System Locale"
@@ -66,6 +66,11 @@ $RegistrySettings = @(
     @{ Path = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameDVR"; Name = "AppCaptureEnabled"; Value = 0; Type = "DWord" },
     @{ Path = "HKCU:\System\GameConfigStore"; Name = "GameDVR_Enabled"; Value = 0; Type = "DWord" }
     @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"; Name = "MacOsKeybindings"; Value = "`"$env:USERPROFILE\.config\autohotkey\macos_keymapping.ahk`""; Type = "String" }
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"; Name = "{CB3B0003-8088-4EDE-8769-8B354AB2FF8C}"; Value = "RemoveCopilotContext"; Type = "String" }
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"; Name = "HideFileExt"; Value = 0; Type = "DWord" }
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"; Name = "ShowSuperHidden"; Value = 1; Type = "DWord" }
+    @{ Path = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"; Name = "{8AB635F8-9A67-4698-AB99-784AD929F3B4}"; Value = "RemoveClipchampContext"; Type = "String" }
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"; Name = "{CB3B0003-8088-4EDE-8769-8B354AB2FF8C}"; Value = "RemoveCopilotContext"; Type = "String" }
 )
 
 Invoke-Gsudo {

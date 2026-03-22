@@ -71,15 +71,22 @@ $RegistrySettings = @(
     @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"; Name = "ShowSuperHidden"; Value = 1; Type = "DWord" }
     @{ Path = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"; Name = "{8AB635F8-9A67-4698-AB99-784AD929F3B4}"; Value = "RemoveClipchampContext"; Type = "String" }
     @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"; Name = "{CB3B0003-8088-4EDE-8769-8B354AB2FF8C}"; Value = "RemoveCopilotContext"; Type = "String" }
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"; Name = "Podman Desktop"; Value = $null; }
 )
 
 Invoke-Gsudo {
   foreach ($Setting in $using:RegistrySettings) {
-    if (!(Test-Path $Setting.Path)) {
-      New-Item -Path $Setting.Path -Force | Out-Null
+    if ($null -eq $Setting.Value) {
+      if (Test-Path $Setting.Path) {
+        Remove-ItemProperty -Path $Setting.Path -Name $Setting.Name -ErrorAction SilentlyContinue
+      }
     }
-
-    New-ItemProperty -Path $Setting.Path -Name $Setting.Name -Value $Setting.Value -PropertyType $Setting.Type -Force | Out-Null
+    else {
+      if (!(Test-Path $Setting.Path)) {
+        New-Item -Path $Setting.Path -Force | Out-Null
+      }
+      New-ItemProperty -Path $Setting.Path -Name $Setting.Name -Value $Setting.Value -PropertyType $Setting.Type -Force | Out-Null
+    }
   }
 }
 

@@ -92,6 +92,7 @@ data:
         {{ if (has "play_games" .use_cases) -}}
         - steam
         - modrinth
+        - discord
         {{ end }}
         # Job-specific customizations
         {{ if (has "work" .use_cases) -}}
@@ -152,6 +153,7 @@ data:
         {{ if (has "play_games" .use_cases) -}}
         - "Valve.Steam"
         - "Modrinth.ModrinthApp"
+        - "Discord.Discord"
         # Microsoft Gaming Services - required to play certain games online
         - "9MWPM2CQNLHN"
         # Xbox - required to play certain games online

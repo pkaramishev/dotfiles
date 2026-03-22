@@ -72,6 +72,7 @@ $RegistrySettings = @(
     @{ Path = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"; Name = "{8AB635F8-9A67-4698-AB99-784AD929F3B4}"; Value = "RemoveClipchampContext"; Type = "String" }
     @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"; Name = "{CB3B0003-8088-4EDE-8769-8B354AB2FF8C}"; Value = "RemoveCopilotContext"; Type = "String" }
     @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"; Name = "Podman Desktop"; Value = $null; }
+    @{ Path = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run"; Name = "Discord"; Value = $null; }
 )
 
 Invoke-Gsudo {

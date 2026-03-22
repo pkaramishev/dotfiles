@@ -536,6 +536,13 @@ sudo mdutil -i on / > /dev/null
 sudo mdutil -E / > /dev/null
 
 ###############################################################################
+# Discord                                                                     #
+###############################################################################
+
+osascript -e 'tell application "System Events" to get the name of every login item' | grep -q "Discord" && \
+osascript -e 'tell application "System Events" to delete login item "Discord"'
+
+###############################################################################
 # Apply Settings                                                              #
 ###############################################################################
 

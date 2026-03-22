@@ -14,3 +14,4 @@ Documents/**
 {{ end }}
 
 .gitkeep
+.config/cacerts/node_bundle.pem

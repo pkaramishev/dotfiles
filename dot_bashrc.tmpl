@@ -7,6 +7,9 @@ eval "$(oh-my-posh init bash --config "~/.config/oh-my-posh/theme.omp.json")"
 export DOCKER_HOST="unix://$HOME/.local/share/containers/podman/machine/podman.sock"
 {{ end }}
 
+# NodeJS environment variables
+export NODE_EXTRA_CA_CERTS="$HOME/.config/cacerts/node_bundle.pem"
+
 # Functions to overwrite standard utilities
 function cat() {
     bat --theme=default "$@"

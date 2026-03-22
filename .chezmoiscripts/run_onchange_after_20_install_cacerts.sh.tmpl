@@ -2,7 +2,7 @@
 #!/bin/bash
 
 # Mark the script runnable each time directory structure changes
-# {{ output "sh" "-c" "ls -lR $HOME/.config/cacerts | sha256sum" }}
+# {{ output "sh" "-c" "ls -lR $HOME/.local/share/chezmoi/dot_config/exact_cacerts | sha256sum" }}
 
 CERT_DIR="$HOME/.config/cacerts"
 {{ if eq .chezmoi.os "windows" }}
@@ -15,6 +15,11 @@ SUDO_CMD=sudo
 if [ ! -d "$CERT_DIR" ]; then
   echo "⚠️  Directory $CERT_DIR doesn't exist, so no cacerts will be installed."
   exit 0
+fi
+
+NODE_BUNDLE="$CERT_DIR/node_bundle.pem"
+if [ -f "$NODE_BUNDLE" ]; then
+  rm $NODE_BUNDLE
 fi
 
 echo "🛠️  Installing additional cacerts from $CERT_DIR..."
@@ -71,6 +76,7 @@ for java_version_dir in "$SDK_MANAGER_JAVA_DIR"/*/*; do
       -storepass changeit 2>/dev/null
 
     $SUDO_CMD keytool -importcert -noprompt \
+      -trustcacerts \
       -alias "$cert_name" \
       -keystore "$CACERTS_PATH" \
       -file "$cert" \
@@ -79,4 +85,15 @@ for java_version_dir in "$SDK_MANAGER_JAVA_DIR"/*/*; do
     echo "✅  Installed cacert $cert_name to $java_version_dir"
   done
 done
+
+# Install certificates for Node
+for cert in "$CERT_DIR"/*.{crt,pem,cer}; do
+    [ -e "$cert" ] || continue
+
+    # Append the content of each cert to the bundle
+    cat "$cert" >> "$NODE_BUNDLE"
+    echo "" >> "$NODE_BUNDLE" # Ensure a newline between certs
+done
+
+echo "✅  Node bundle of cacerts created at $NODE_BUNDLE"
 {{ end }}

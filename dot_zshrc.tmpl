@@ -71,6 +71,9 @@ export DOCKER_HOST="npipe:////./pipe/docker_engine"
 export DOCKER_HOST="unix://$HOME/.local/share/containers/podman/machine/podman.sock"
 {{ end }}
 
+# NodeJS environment variables
+export NODE_EXTRA_CA_CERTS="$HOME/.config/cacerts/node_bundle.pem"
+
 # Functions to overwrite standard utilities
 function cat() {
     bat --theme=default "$@"

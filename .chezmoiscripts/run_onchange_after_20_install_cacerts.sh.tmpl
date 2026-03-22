@@ -1,0 +1,82 @@
+{{ if (has "write_code" .use_cases) -}}
+#!/bin/bash
+
+# Mark the script runnable each time directory structure changes
+# {{ output "sh" "-c" "ls -lR $HOME/.config/cacerts | sha256sum" }}
+
+CERT_DIR="$HOME/.config/cacerts"
+{{ if eq .chezmoi.os "windows" }}
+SUDO_CMD=gsudo
+{{ else }}
+SUDO_CMD=sudo
+{{ end }}
+
+# Ensure the directory exists
+if [ ! -d "$CERT_DIR" ]; then
+  echo "⚠️  Directory $CERT_DIR doesn't exist, so no cacerts will be installed."
+  exit 0
+fi
+
+echo "🛠️  Installing additional cacerts from $CERT_DIR..."
+
+# Install certificates on System Level
+for cert in "$CERT_DIR"/*.{crt,pem,cer}; do
+  [ -e "$cert" ] || continue
+
+  {{ if (eq .chezmoi.os "darwin") }}
+  $SUDO_CMD security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain "$cert"
+  {{ end }}
+
+  {{ if eq .chezmoi.os "windows" }}
+  $SUDO_CMD certutil -addstore -f "Root" "$cert" > /dev/null
+  {{ end }}
+
+  cert_name=$(basename "$cert")
+  echo "✅  Added $cert_name to System's cert store"
+done
+
+# Install certificates for Java
+SDK_MANAGER_JAVA_DIR="$HOME/.vfox/cache/java"
+if [ ! -d "$SDK_MANAGER_JAVA_DIR" ]; then
+  echo "⚠️  Directory $SDK_MANAGER_JAVA_DIR doesn't exist, so the script can't find java and won't install CACERTS to it."
+  exit 0
+fi
+
+for java_version_dir in "$SDK_MANAGER_JAVA_DIR"/*/*; do
+  [ -d "$java_version_dir" ] || continue
+  version_name=$(basename "$java_version_dir")
+
+  # Locate the cacerts file
+  CACERTS_PATH=""
+  if [ -f "$java_version_dir/lib/security/cacerts" ]; then
+    CACERTS_PATH="$java_version_dir/lib/security/cacerts"
+  elif [ -f "$java_version_dir/jre/lib/security/cacerts" ]; then
+    CACERTS_PATH="$java_version_dir/jre/lib/security/cacerts"
+  fi
+
+  if [ -z "$CACERTS_PATH" ]; then
+    echo "⚠️  Didn't install cacerts to $java_version_dir: could not locate cacerts directory."
+    continue
+  fi
+
+  for cert in "$CERT_DIR"/*.{crt,pem,cer}; do
+    [ -e "$cert" ] || continue
+
+    cert_name=$(basename "$cert")
+
+    # ttempt to delete the alias first (silencing errors if it's not there)
+    # This makes the subsequent import idempotent.
+    $SUDO_CMD keytool -delete -alias "$cert_name" \
+      -keystore "$CACERTS_PATH" \
+      -storepass changeit 2>/dev/null
+
+    $SUDO_CMD keytool -importcert -noprompt \
+      -alias "$cert_name" \
+      -keystore "$CACERTS_PATH" \
+      -file "$cert" \
+      -storepass changeit 2>/dev/null
+
+    echo "✅  Installed cacert $cert_name to $java_version_dir"
+  done
+done
+{{ end }}

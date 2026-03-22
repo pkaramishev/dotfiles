@@ -3,7 +3,8 @@
         "*.yaml.tmpl": "yaml",
         "*.sh.tmpl": "shellscript",
         "*.ps1.tmpl": "powershell",
-        "dot_*rc": "shellscript",
+        "dot_*rc*": "shellscript",
+        "dot_*profile": "shellscript",
         "dot_gitconfig.tmpl": "ini"
     }
 }

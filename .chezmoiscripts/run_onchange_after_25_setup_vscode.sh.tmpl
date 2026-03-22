@@ -19,7 +19,7 @@ echo "🛠️  Configuring VSCode plugins..."
 
 extensions=({{ range .apps.vscode.plugins }}{{ . | quote }} {{ end }})
 for extension in "${extensions[@]}"; do
-  NODE_TLS_REJECT_UNAUTHORIZED=0 code --install-extension "$extension" --force
+  code --install-extension "$extension" --force
 done
 
 # Configure Global VSCode settings

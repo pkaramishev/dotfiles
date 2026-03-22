@@ -67,8 +67,7 @@ data:
         - warp
         - vlc
         - font-meslo-lg-nerd-font
-        # Custom MacOS tools
-        - itsycal
+        - ticktick
         - bettermouse
         # Coding tools
         {{ if (has "write_code" .use_cases) -}}
@@ -114,6 +113,7 @@ data:
         - "JanDeDobbeleer.OhMyPosh"
         - "jqlang.jq"
         - "Warp.Warp"
+        - "Appest.TickTick"
         {{ if (not (has "work" .use_cases)) -}}
         - "Google.Chrome"
         {{ end }}

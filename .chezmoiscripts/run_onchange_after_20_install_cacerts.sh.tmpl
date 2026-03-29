@@ -2,7 +2,8 @@
 #!/bin/bash
 
 # Mark the script runnable each time directory structure changes
-# {{ output "sh" "-c" "ls -lR $HOME/.local/share/chezmoi/dot_config/exact_cacerts | sha256sum" }}
+# {{ $cacerts_path := joinPath .chezmoi.sourceDir "dot_config/exact_cacerts" | quote }}
+# {{ output "bash" "-c" "ls -lR $cacerts_path | sha256sum" }}
 
 CERT_DIR="$HOME/.config/cacerts"
 {{ if eq .chezmoi.os "windows" }}

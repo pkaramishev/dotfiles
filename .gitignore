@@ -404,3 +404,5 @@ FodyWeavers.xsd
 
 # Certificates
 *.cer
+*.crt
+*.pem

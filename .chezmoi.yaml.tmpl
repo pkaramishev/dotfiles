@@ -51,7 +51,7 @@ data:
         {{ end }}
         # LLM
         {{ if (has "use_llm" .use_cases) -}}
-        - block-goose-cli
+        - anomalyco/tap/opencode
         - pygments
         {{ end }}
         # Job-specific customizations
@@ -77,7 +77,7 @@ data:
         {{ end }}
         # LLM
         {{ if (has "use_llm" .use_cases) -}}
-        - block-goose
+        - opencode-desktop
         {{ end }}
         # Private chats
         {{ if (has "chat_in_private" .use_cases) -}}
